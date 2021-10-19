@@ -32,4 +32,9 @@ void media_a_nueva (int nfoto);
 void mostrar_camara (void);
 // Captura una imagen de la cámara y la muestra en la ventana correspondiente
 
+void capturar_de_camara (int nres);
+// Captura la imagen de una cámara de vídeo conectada al ordenador. Se podrá
+// previsualizar la entrada de la cámara, pulsando una tecla o un botón cuando
+// se quiera capturar una imagen
+
 #endif // VIDEO_H

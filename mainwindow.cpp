@@ -11,6 +11,7 @@ using namespace cv;
 #include "brillocontraste.h"
 #include "dialognueva.h"
 #include "imagenes.h"
+#include "video.h"
 #include "mediadevideo.h"
 #include "mediaponderada.h"
 #include "rotaravideo.h"
@@ -322,5 +323,29 @@ void MainWindow::on_actionMediana_triggered()
     if (foto_activa() != 1) {
         suavizados sg(3, this);
         sg.exec();
+    }
+}
+
+void MainWindow::on_toolButton_8_clicked()
+{
+    herr_actual = HER_ELIPSE;
+}
+
+void MainWindow::on_actionElipse_triggered()
+{
+    herr_actual = HER_ELIPSE;
+    ui->toolButton_7->setChecked(true);
+}
+
+void MainWindow::on_actionCopiar_a_nueva_triggered()
+{
+    if (foto_activa() != 1 && primera_libre() != -1)
+        copiar_a_nueva(foto_activa(), primera_libre());
+}
+
+void MainWindow::on_actionCapturar_de_c_mara_triggered()
+{
+    if (primera_libre() != -1) {
+        capturar_de_camara(primera_libre());
     }
 }

@@ -339,6 +339,29 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QToolButton" name="toolButton_8">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>0</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/elipse.png</normaloff>:/new/prefix1/imagenes/elipse.png</iconset>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -355,6 +378,7 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionNueva_imagen"/>
     <addaction name="actionAbrir_imagen"/>
+    <addaction name="actionCapturar_de_c_mara"/>
     <addaction name="separator"/>
     <addaction name="actionGuardar"/>
     <addaction name="actionGuardar_como"/>
@@ -374,6 +398,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionPreguntar_si_guardar"/>
     </widget>
     <addaction name="actionSeleccionar_todo"/>
+    <addaction name="actionCopiar_a_nueva"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
    </widget>
@@ -385,6 +410,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionLinea"/>
     <addaction name="actionSeleccionar"/>
     <addaction name="actionRect_ngulo"/>
+    <addaction name="actionElipse"/>
    </widget>
    <widget class="QMenu" name="menuTransformar">
     <property name="title">
@@ -520,7 +546,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionBrillo_contraste">
    <property name="text">
-    <string>Brillo/Contraste...</string>
+    <string>Brillo/Contraste/Gama...</string>
    </property>
   </action>
   <action name="actionInvertir">
@@ -586,6 +612,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionMediana">
    <property name="text">
     <string>Mediana</string>
+   </property>
+  </action>
+  <action name="actionElipse">
+   <property name="text">
+    <string>Elipse</string>
+   </property>
+  </action>
+  <action name="actionCopiar_a_nueva">
+   <property name="text">
+    <string>Copiar a nueva</string>
+   </property>
+  </action>
+  <action name="actionCapturar_de_c_mara">
+   <property name="text">
+    <string>Capturar de cámara...</string>
    </property>
   </action>
  </widget>

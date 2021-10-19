@@ -21,6 +21,7 @@ private:
     int nfoto;
     double suma;
     double multiplica;
+    double gama;
     void actualiza_suma_multiplica();
 
 private slots:
@@ -31,6 +32,8 @@ private slots:
     void on_spinBox_2_valueChanged(int );
     void on_spinBox_valueChanged(int );
     void on_checkBox_stateChanged(int arg1);
+    void on_spinBox_3_valueChanged(int arg1);
+    void on_horizontalSlider_3_valueChanged(int value);
 };
 
 #endif // BRILLOCONTRASTE_H

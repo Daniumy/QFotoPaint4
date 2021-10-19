@@ -59,6 +59,10 @@ private slots:
     void on_toolButton_7_clicked();
     void on_actionRect_ngulo_triggered();
     void on_actionMediana_triggered();
+    void on_toolButton_8_clicked();
+    void on_actionElipse_triggered();
+    void on_actionCopiar_a_nueva_triggered();
+    void on_actionCapturar_de_c_mara_triggered();
 };
 
 extern MainWindow *w;

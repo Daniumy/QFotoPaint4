@@ -387,6 +387,36 @@ void cb_ver_rectangulo (int factual, int x, int y)
 
 //---------------------------------------------------------------------------
 
+void cb_elipse (int factual, int x, int y)
+{
+    Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
+    if (difum_pincel==0)
+        ellipse(im, Point(downx, downy), Size(abs(x - downx), abs(y - downy)), 0, 0, 360, color_pincel, radio_pincel-1);
+    else {
+        Mat res(im.size(), im.type(), color_pincel);
+        Mat cop(im.size(), im.type(), CV_RGB(0,0,0));
+        ellipse(cop, Point(downx, downy), Size(abs(x - downx), abs(y - downy)), 0, 0, 360, CV_RGB(255, 255, 255), radio_pincel-1);
+        blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
+        multiply(res, cop, res, 1.0/255.0);
+        bitwise_not(cop, cop);
+        multiply(im, cop, im, 1.0/255.0);
+        im= res + im;
+    }
+    imshow(foto[factual].nombre, im);
+    foto[factual].modificada= true;
+}
+
+//---------------------------------------------------------------------------
+
+void cb_ver_elipse (int factual, int x, int y)
+{
+    Mat res= foto[factual].img.clone();
+    ellipse(res, Point(downx, downy), Size(abs(x - downx), abs(y - downy)), 0, 0, 360, color_pincel, radio_pincel-1);
+    imshow(foto[factual].nombre, res);
+}
+
+//---------------------------------------------------------------------------
+
 void callback (int event, int x, int y, int flags, void *_nfoto)
 {
     int factual= (int) _nfoto;
@@ -445,6 +475,16 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_rectangulo(factual, x, y);
         else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
             cb_ver_rectangulo(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
+        break;
+
+    // 2.5. HERRAMIENTA ELIPSE
+    case HER_ELIPSE:
+        if (event==EVENT_LBUTTONUP)
+            cb_elipse(factual, x, y);
+        else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
+            cb_ver_elipse(factual, x, y);
         else
             ninguna_accion(factual, x, y);
         break;
@@ -511,11 +551,15 @@ void rotar_exacto (int nfoto, int nres, int grado)
 
 //---------------------------------------------------------------------------
 
-void ver_brillo_contraste (int nfoto, double suma, double prod, bool guardar)
+void ver_brillo_contraste_gama (int nfoto, double suma, double prod, double gama, bool guardar)
 {
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img;
     foto[nfoto].img.convertTo(img, CV_8UC3, prod, suma);
+    Mat img32F;
+    img.convertTo(img32F, CV_32F, 1.0/255);
+    pow(img32F, gama, img32F);
+    img32F.convertTo(img, CV_8U, 255);
     imshow(foto[nfoto].nombre, img);
     if (guardar) {
         img.copyTo(foto[nfoto].img);
@@ -559,6 +603,13 @@ string Lt1(string cadena)
 {
     QString temp= QString::fromUtf8(cadena.c_str());
     return temp.toLatin1().data();
+}
+
+//---------------------------------------------------------------------------
+
+void copiar_a_nueva (int nfoto, int nres)
+{
+    crear_nueva(nres, foto[nfoto].img(foto[nfoto].roi).clone());
 }
 
 //---------------------------------------------------------------------------

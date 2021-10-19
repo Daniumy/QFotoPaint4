@@ -117,3 +117,31 @@ void mostrar_camara (void)
 }
 
 //---------------------------------------------------------------------------
+
+void capturar_de_camara (int nres)
+{
+    VideoCapture cap(0);
+
+    if (cap.isOpened()) {
+        Mat frame;
+        int tecla;
+
+        while ((tecla = waitKey(1)) == -1) {
+            if (!cap.read(frame))
+                return;
+
+            namedWindow("Pulse una tecla para capturar", 0);
+            imshow("Pulse una tecla para capturar", frame);
+        }
+
+        if (tecla != 27) {
+            crear_nueva(nres, frame);
+        }
+
+        destroyWindow("Pulse una tecla para capturar");
+    } else {
+        // TODO: añadir mensaje de error (no se ha podido abrir la cámara)
+    }
+}
+
+//---------------------------------------------------------------------------
