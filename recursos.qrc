@@ -12,5 +12,6 @@
         <file>imagenes/rectangulo.png</file>
         <file>imagenes/rellenar.png</file>
         <file>imagenes/logo.gif</file>
+        <file>imagenes/histbase.png</file>
     </qresource>
 </RCC>

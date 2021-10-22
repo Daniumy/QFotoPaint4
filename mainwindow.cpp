@@ -349,3 +349,49 @@ void MainWindow::on_actionCapturar_de_c_mara_triggered()
         capturar_de_camara(primera_libre());
     }
 }
+
+void MainWindow::on_toolButton_9_clicked()
+{
+    herr_actual = HER_ARCOIRIS;
+}
+
+void MainWindow::on_actionArco_iris_triggered()
+{
+    herr_actual = HER_ARCOIRIS;
+    ui->toolButton_9->setChecked(true);
+}
+
+void MainWindow::on_actionGris_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 3);
+    }
+}
+
+void MainWindow::on_actionRojo_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 2);
+    }
+}
+
+void MainWindow::on_actionVerde_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 1);
+    }
+}
+
+void MainWindow::on_actionAzul_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 0);
+    }
+}
+
+void MainWindow::on_actionEscala_de_grises_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        escala_color(foto_activa(), primera_libre());
+    }
+}

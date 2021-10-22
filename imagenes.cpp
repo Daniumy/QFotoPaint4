@@ -417,6 +417,61 @@ void cb_ver_elipse (int factual, int x, int y)
 
 //---------------------------------------------------------------------------
 
+int PALAI[3][24] = {
+    { 255, 255, 255, 255, 255, 192, 128, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 128, 192, 255, 255, 255, 255},
+    { 0, 64, 128, 192, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192,128, 64, 0, 0, 0, 0, 0, 0, 0, 0},
+    { 0, 0, 0, 0, 0, 0, 0, 0, 64, 128, 192, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 128, 64}
+};
+
+void cb_arcoiris (int factual, int x, int y)
+{
+    static int pos = 0;
+    Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
+    if (difum_pincel==0)
+        circle(im, Point(x, y), radio_pincel, CV_RGB(PALAI[0][pos], PALAI[1][pos], PALAI[2][pos]), -1, LINE_AA);
+    else {
+        int tam = radio_pincel + difum_pincel;
+        int posx = tam, posy = tam;
+        Rect roi(x - tam, y - tam, 2 * tam + 1, 2 * tam + 1);
+
+        // Comprobamos que no se sale del tam. maximo
+        if (roi.x < 0) {
+            roi.width += roi.x;
+            posx += roi.x;
+            roi.x = 0;
+        }
+
+        if (roi.y < 0) {
+            roi.height += roi.y;
+            posy += roi.y;
+            roi.y = 0;
+        }
+
+        if ((roi.x + roi.width) > im.cols) {
+            roi.width = im.cols - roi.x;
+        }
+
+        if ((roi.y + roi.height) > im.rows) {
+            roi.height = im.rows - roi.y;
+        }
+
+        im = im(roi);
+        Mat res(im.size(), im.type(), CV_RGB(PALAI[0][pos], PALAI[1][pos], PALAI[2][pos]));
+        Mat cop(im.size(), im.type(), CV_RGB(0,0,0));
+        circle(cop, Point(posx, posy), radio_pincel, CV_RGB(255,255,255), -1, LINE_AA);
+        blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
+        multiply(res, cop, res, 1.0/255.0);
+        bitwise_not(cop, cop);
+        multiply(im, cop, im, 1.0/255.0);
+        im= res + im;
+    }
+    pos = (pos + 1) % 24;
+    imshow(foto[factual].nombre, foto[factual].img);
+    foto[factual].modificada= true;
+}
+
+//---------------------------------------------------------------------------
+
 void callback (int event, int x, int y, int flags, void *_nfoto)
 {
     int factual= (int) _nfoto;
@@ -485,6 +540,14 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_elipse(factual, x, y);
         else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
             cb_ver_elipse(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
+        break;
+
+    // 2.6. Herramienta ARCOIRIS
+    case HER_ARCOIRIS:
+        if (flags==EVENT_FLAG_LBUTTON)
+            cb_arcoiris(factual, x, y);
         else
             ninguna_accion(factual, x, y);
         break;
@@ -584,6 +647,71 @@ void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
         img.copyTo(foto[nfoto].img);
         foto[nfoto].modificada= true;
     }
+}
+
+//---------------------------------------------------------------------------
+
+void ver_histograma (int nfoto, int nres, int canal)
+{
+    QImage imq = QImage(":/new/prefix1/imagenes/histbase.png");
+    Mat imghist(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
+    cvtColor(imghist, imghist, COLOR_RGBA2RGB);
+
+    Mat img = foto[nfoto].img;
+    Mat gris;
+    Mat hist;
+    cvtColor(img, gris, COLOR_BGR2GRAY);  // Conversión a gris
+    int canales[1] = {0};
+    int bins[1] = {256};
+    float rango[2] = {0, 256};
+    const float *rangos[] = {rango};
+
+    if (canal == 3) {
+        calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+    } else {
+        calcHist(&img, 1, &canal, noArray(), hist, 1, bins, rangos);
+    }
+
+    double minVal, maxVal;
+    minMaxLoc(hist, &minVal, &maxVal);
+
+    Scalar color = CV_RGB(canal == 2 ? 255 : 0, canal == 1 ? 255 : 0, canal == 0 ? 255 : 0);
+
+    for (int i= 0; i<256; i++) {
+        // qDebug("Celda %d: %g", i, hist.at<float>(i));
+        double valor = hist.at<float>(i) / maxVal;
+        rectangle(imghist, Point(3 + i * 391 / 256, 185 - valor * 182),
+                           Point(3 + (i + 1) * 391 / 256, 185),
+                           color,
+                           -1);
+    }
+    crear_nueva(nres, imghist);
+}
+
+//---------------------------------------------------------------------------
+
+void escala_color (int nfoto, int nres)
+{
+    Mat gris;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);
+    cvtColor(gris, gris, COLOR_GRAY2BGR);
+
+    // Tabla LUT
+    Mat lut(1, 256, CV_8UC3);
+    int vr = color_pincel.val[2], vg = color_pincel.val[1], vb = color_pincel.val[0];
+    for (int A = 0; A < 256; A++) {
+        if (A < 128) {
+            lut.at<Vec3b>(A) = Vec3b(vb * A / 128, vg * A / 128, vr * A / 128);
+        } else {
+            lut.at<Vec3b>(A) = Vec3b(vb + (255 - vb) * (A - 128) / 128,
+                                     vg + (255 - vg) * (A - 128) / 128,
+                                     vr + (255 - vr) * (A - 128) / 128);
+        }
+    }
+
+    Mat img;
+    LUT(gris, lut, img);
+    crear_nueva(nres, img);
 }
 
 //---------------------------------------------------------------------------
