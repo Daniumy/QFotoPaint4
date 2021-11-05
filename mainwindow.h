@@ -70,6 +70,9 @@ private slots:
     void on_actionVerde_triggered();
     void on_actionAzul_triggered();
     void on_actionEscala_de_grises_triggered();
+    void on_actionAjuste_lineal_del_histograma_triggered();
+    void on_actionCapturar_de_v_deo_triggered();
+    void on_actionBajorrelieve_triggered();
 };
 
 extern MainWindow *w;

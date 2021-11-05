@@ -398,6 +398,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionNueva_imagen"/>
     <addaction name="actionAbrir_imagen"/>
     <addaction name="actionCapturar_de_c_mara"/>
+    <addaction name="actionCapturar_de_v_deo"/>
     <addaction name="separator"/>
     <addaction name="actionGuardar"/>
     <addaction name="actionGuardar_como"/>
@@ -460,6 +461,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuRotar"/>
     <addaction name="actionMedia_ponderada"/>
     <addaction name="actionEscala_de_grises"/>
+    <addaction name="actionAjuste_lineal_del_histograma"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -474,6 +476,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionMediana"/>
     </widget>
     <addaction name="menuSuavizado"/>
+    <addaction name="actionBajorrelieve"/>
    </widget>
    <widget class="QMenu" name="menuV_deo">
     <property name="title">
@@ -689,6 +692,21 @@ p, li { white-space: pre-wrap; }
   <action name="actionEscala_de_grises">
    <property name="text">
     <string>Escala de color</string>
+   </property>
+  </action>
+  <action name="actionAjuste_lineal_del_histograma">
+   <property name="text">
+    <string>Ajuste lineal del histograma...</string>
+   </property>
+  </action>
+  <action name="actionCapturar_de_v_deo">
+   <property name="text">
+    <string>Capturar de vídeo...</string>
+   </property>
+  </action>
+  <action name="actionBajorrelieve">
+   <property name="text">
+    <string>Bajorrelieve..</string>
    </property>
   </action>
  </widget>

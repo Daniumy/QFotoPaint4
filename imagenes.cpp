@@ -506,7 +506,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.2. Herramienta LINEA
+        // 2.2. Herramienta LINEA
     case HER_LINEA:
         if (event==EVENT_LBUTTONUP)
             cb_linea(factual, x, y);
@@ -516,7 +516,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.3. Herramienta SELECCION
+        // 2.3. Herramienta SELECCION
     case HER_SELECCION:
         if (event==EVENT_LBUTTONUP)
             cb_seleccionar(factual, x, y);
@@ -524,7 +524,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
         break;
 
-    // 2.4. Herramienta RECTANGULO
+        // 2.4. Herramienta RECTANGULO
     case HER_RECTANGULO:
         if (event==EVENT_LBUTTONUP)
             cb_rectangulo(factual, x, y);
@@ -534,7 +534,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.5. HERRAMIENTA ELIPSE
+        // 2.5. HERRAMIENTA ELIPSE
     case HER_ELIPSE:
         if (event==EVENT_LBUTTONUP)
             cb_elipse(factual, x, y);
@@ -544,7 +544,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.6. Herramienta ARCOIRIS
+        // 2.6. Herramienta ARCOIRIS
     case HER_ARCOIRIS:
         if (flags==EVENT_FLAG_LBUTTON)
             cb_arcoiris(factual, x, y);
@@ -570,7 +570,13 @@ void invertir (int nfoto, int nres)
 
 void rotar_angulo (int nfoto, Mat &imgRes, double angulo, double escala, int modo)
 {
-    Mat imagen= foto[nfoto].img;
+    rotar_angulo(foto[nfoto].img, imgRes, angulo, escala, modo);
+}
+
+//---------------------------------------------------------------------------
+
+void rotar_angulo (Mat imagen, Mat &imgRes, double angulo, double escala, int modo)
+{
     double w= imagen.size().width, h= imagen.size().height;
     Size sres;
     if (modo==0) {     // Reescalar con proporción al original
@@ -651,6 +657,43 @@ void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
 
 //---------------------------------------------------------------------------
 
+void ver_bajorrelieve (int nfoto, double angulo, double grado, int ntextura, bool guardar)
+{
+    QString NOMBRES[4] = {":/new/prefix1/imagenes/arena.jpg", ":/new/prefix1/imagenes/cielo.jpg", ":/new/prefix1/imagenes/madera.jpg", ":/new/prefix1/imagenes/gris.png"};
+    QImage imq= QImage(NOMBRES[ntextura]);
+    Mat imgFondo(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
+    cvtColor(imgFondo, imgFondo, COLOR_RGBA2RGB);
+
+    Mat rotada;
+    rotar_angulo(nfoto, rotada, angulo, 1.0, 1);
+    Mat gris;
+    cvtColor(rotada, gris, COLOR_BGR2GRAY);
+    Mat sobel;
+    Sobel(gris, sobel, CV_16S, 1, 0, 3, grado, 0, BORDER_REFLECT);
+    rotar_angulo(sobel, rotada, -angulo, 1.0, 0);
+
+    int w = foto[nfoto].img.cols, h = foto[nfoto].img.rows;
+    int w2 = rotada.cols, h2 = rotada.rows;
+    Mat res = rotada(Rect((w2 - w) / 2, (h2 - h) / 2, w, h)).clone();
+
+    Mat canales[3] = {res, res, res};
+    merge(canales, 3, gris);
+
+    resize(imgFondo, imgFondo, Size(gris.cols, gris.rows));
+    imgFondo.convertTo(imgFondo, CV_16SC3);
+    imgFondo = imgFondo + gris;
+    imgFondo.convertTo(res, CV_8UC3);
+
+    if (!guardar) {
+        namedWindow("Bajorrelieve", 0);
+        imshow("Bajorrelieve", res);
+    } else {
+        crear_nueva(primera_libre(), res);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void ver_histograma (int nfoto, int nres, int canal)
 {
     QImage imq = QImage(":/new/prefix1/imagenes/histbase.png");
@@ -681,11 +724,54 @@ void ver_histograma (int nfoto, int nres, int canal)
         // qDebug("Celda %d: %g", i, hist.at<float>(i));
         double valor = hist.at<float>(i) / maxVal;
         rectangle(imghist, Point(3 + i * 391 / 256, 185 - valor * 182),
-                           Point(3 + (i + 1) * 391 / 256, 185),
-                           color,
-                           -1);
+                  Point(3 + (i + 1) * 391 / 256, 185),
+                  color,
+                  -1);
     }
     crear_nueva(nres, imghist);
+}
+
+//---------------------------------------------------------------------------
+
+void ajuste_lineal (int nfoto, double pmin, double pmax, bool guardar)
+{
+    Mat gris;
+    Mat hist;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);  // Conversión a gris
+    int canales[1]= {0};
+    int bins[1]= {256};
+    float rango[2]= {0, 256};
+    const float *rangos[]= {rango};
+    calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+    pmin = pmin / 100 * gris.cols * gris.rows;
+    pmax = pmax / 100 * gris.cols * gris.rows;
+
+    double acum = 0;
+    int vmin;
+    for (vmin = 0; vmin < 256 && acum < pmin; vmin++) {
+        acum += hist.at<float>(vmin);
+    }
+
+    acum = 0;
+    int vmax;
+    for (vmax = 255; vmax > 0 && acum < pmax; vmax--) {
+        acum += hist.at<float>(vmax);
+    }
+
+    if (vmax <= vmin)
+        vmax = vmin + 1;
+
+    double a = 255.0 / (vmax - vmin);
+    double b = -vmin * a;
+
+    Mat imgres;
+    foto[nfoto].img.convertTo(imgres, CV_8UC3, a, b);
+    imshow(foto[nfoto].nombre, imgres);
+
+    if (guardar) {
+        imgres.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
 }
 
 //---------------------------------------------------------------------------
