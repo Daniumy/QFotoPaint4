@@ -93,6 +93,9 @@ void crear_nueva (int nfoto, int ancho, int alto, Scalar color)
     escribir_barra_estado();
 }
 
+void reset_callback(int nfoto){
+    setMouseCallback(foto[nfoto].nombre, callback, (void*) nfoto);
+}
 //---------------------------------------------------------------------------
 
 void crear_nueva (int nfoto, Mat img)
@@ -417,6 +420,61 @@ void cb_ver_elipse (int factual, int x, int y)
 
 //---------------------------------------------------------------------------
 
+int PALAI[3][24] = {
+    { 255, 255, 255, 255, 255, 192, 128, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 128, 192, 255, 255, 255, 255},
+    { 0, 64, 128, 192, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192,128, 64, 0, 0, 0, 0, 0, 0, 0, 0},
+    { 0, 0, 0, 0, 0, 0, 0, 0, 64, 128, 192, 255, 255, 255, 255, 255, 255, 255, 255, 255, 192, 128, 64}
+};
+
+void cb_arcoiris (int factual, int x, int y)
+{
+    static int pos = 0;
+    Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
+    if (difum_pincel==0)
+        circle(im, Point(x, y), radio_pincel, CV_RGB(PALAI[0][pos], PALAI[1][pos], PALAI[2][pos]), -1, LINE_AA);
+    else {
+        int tam = radio_pincel + difum_pincel;
+        int posx = tam, posy = tam;
+        Rect roi(x - tam, y - tam, 2 * tam + 1, 2 * tam + 1);
+
+        // Comprobamos que no se sale del tam. maximo
+        if (roi.x < 0) {
+            roi.width += roi.x;
+            posx += roi.x;
+            roi.x = 0;
+        }
+
+        if (roi.y < 0) {
+            roi.height += roi.y;
+            posy += roi.y;
+            roi.y = 0;
+        }
+
+        if ((roi.x + roi.width) > im.cols) {
+            roi.width = im.cols - roi.x;
+        }
+
+        if ((roi.y + roi.height) > im.rows) {
+            roi.height = im.rows - roi.y;
+        }
+
+        im = im(roi);
+        Mat res(im.size(), im.type(), CV_RGB(PALAI[0][pos], PALAI[1][pos], PALAI[2][pos]));
+        Mat cop(im.size(), im.type(), CV_RGB(0,0,0));
+        circle(cop, Point(posx, posy), radio_pincel, CV_RGB(255,255,255), -1, LINE_AA);
+        blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
+        multiply(res, cop, res, 1.0/255.0);
+        bitwise_not(cop, cop);
+        multiply(im, cop, im, 1.0/255.0);
+        im= res + im;
+    }
+    pos = (pos + 1) % 24;
+    imshow(foto[factual].nombre, foto[factual].img);
+    foto[factual].modificada= true;
+}
+
+//---------------------------------------------------------------------------
+
 void callback (int event, int x, int y, int flags, void *_nfoto)
 {
     int factual= (int) _nfoto;
@@ -451,7 +509,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.2. Herramienta LINEA
+        // 2.2. Herramienta LINEA
     case HER_LINEA:
         if (event==EVENT_LBUTTONUP)
             cb_linea(factual, x, y);
@@ -461,7 +519,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.3. Herramienta SELECCION
+        // 2.3. Herramienta SELECCION
     case HER_SELECCION:
         if (event==EVENT_LBUTTONUP)
             cb_seleccionar(factual, x, y);
@@ -469,7 +527,7 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
         break;
 
-    // 2.4. Herramienta RECTANGULO
+        // 2.4. Herramienta RECTANGULO
     case HER_RECTANGULO:
         if (event==EVENT_LBUTTONUP)
             cb_rectangulo(factual, x, y);
@@ -479,12 +537,20 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
 
-    // 2.5. HERRAMIENTA ELIPSE
+        // 2.5. HERRAMIENTA ELIPSE
     case HER_ELIPSE:
         if (event==EVENT_LBUTTONUP)
             cb_elipse(factual, x, y);
         else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
             cb_ver_elipse(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
+        break;
+
+        // 2.6. Herramienta ARCOIRIS
+    case HER_ARCOIRIS:
+        if (flags==EVENT_FLAG_LBUTTON)
+            cb_arcoiris(factual, x, y);
         else
             ninguna_accion(factual, x, y);
         break;
@@ -507,7 +573,13 @@ void invertir (int nfoto, int nres)
 
 void rotar_angulo (int nfoto, Mat &imgRes, double angulo, double escala, int modo)
 {
-    Mat imagen= foto[nfoto].img;
+    rotar_angulo(foto[nfoto].img, imgRes, angulo, escala, modo);
+}
+
+//---------------------------------------------------------------------------
+
+void rotar_angulo (Mat imagen, Mat &imgRes, double angulo, double escala, int modo)
+{
     double w= imagen.size().width, h= imagen.size().height;
     Size sres;
     if (modo==0) {     // Reescalar con proporción al original
@@ -588,6 +660,151 @@ void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
 
 //---------------------------------------------------------------------------
 
+void ver_bajorrelieve (int nfoto, double angulo, double grado, int ntextura, bool guardar)
+{
+    QString NOMBRES[4] = {":/new/prefix1/imagenes/arena.jpg", ":/new/prefix1/imagenes/cielo.jpg", ":/new/prefix1/imagenes/madera.jpg", ":/new/prefix1/imagenes/gris.png"};
+    QImage imq= QImage(NOMBRES[ntextura]);
+    Mat imgFondo(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
+    cvtColor(imgFondo, imgFondo, COLOR_RGBA2RGB);
+
+    Mat rotada;
+    rotar_angulo(nfoto, rotada, angulo, 1.0, 1);
+    Mat gris;
+    cvtColor(rotada, gris, COLOR_BGR2GRAY);
+    Mat sobel;
+    Sobel(gris, sobel, CV_16S, 1, 0, 3, grado, 0, BORDER_REFLECT);
+    rotar_angulo(sobel, rotada, -angulo, 1.0, 0);
+
+    int w = foto[nfoto].img.cols, h = foto[nfoto].img.rows;
+    int w2 = rotada.cols, h2 = rotada.rows;
+    Mat res = rotada(Rect((w2 - w) / 2, (h2 - h) / 2, w, h)).clone();
+
+    Mat canales[3] = {res, res, res};
+    merge(canales, 3, gris);
+
+    resize(imgFondo, imgFondo, Size(gris.cols, gris.rows));
+    imgFondo.convertTo(imgFondo, CV_16SC3);
+    imgFondo = imgFondo + gris;
+    imgFondo.convertTo(res, CV_8UC3);
+
+    if (!guardar) {
+        namedWindow("Bajorrelieve", 0);
+        imshow("Bajorrelieve", res);
+    } else {
+        crear_nueva(primera_libre(), res);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void ver_histograma (int nfoto, int nres, int canal)
+{
+    QImage imq = QImage(":/new/prefix1/imagenes/histbase.png");
+    Mat imghist(imq.height(),imq.width(),CV_8UC4,imq.scanLine(0));
+    cvtColor(imghist, imghist, COLOR_RGBA2RGB);
+
+    Mat img = foto[nfoto].img;
+    Mat gris;
+    Mat hist;
+    cvtColor(img, gris, COLOR_BGR2GRAY);  // Conversión a gris
+    int canales[1] = {0};
+    int bins[1] = {256};
+    float rango[2] = {0, 256};
+    const float *rangos[] = {rango};
+
+    if (canal == 3) {
+        calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+    } else {
+        calcHist(&img, 1, &canal, noArray(), hist, 1, bins, rangos);
+    }
+
+    double minVal, maxVal;
+    minMaxLoc(hist, &minVal, &maxVal);
+
+    Scalar color = CV_RGB(canal == 2 ? 255 : 0, canal == 1 ? 255 : 0, canal == 0 ? 255 : 0);
+
+    for (int i= 0; i<256; i++) {
+        // qDebug("Celda %d: %g", i, hist.at<float>(i));
+        double valor = hist.at<float>(i) / maxVal;
+        rectangle(imghist, Point(3 + i * 391 / 256, 185 - valor * 182),
+                  Point(3 + (i + 1) * 391 / 256, 185),
+                  color,
+                  -1);
+    }
+    crear_nueva(nres, imghist);
+}
+
+//---------------------------------------------------------------------------
+
+void ajuste_lineal (int nfoto, double pmin, double pmax, bool guardar)
+{
+    Mat gris;
+    Mat hist;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);  // Conversión a gris
+    int canales[1]= {0};
+    int bins[1]= {256};
+    float rango[2]= {0, 256};
+    const float *rangos[]= {rango};
+    calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+    pmin = pmin / 100 * gris.cols * gris.rows;
+    pmax = pmax / 100 * gris.cols * gris.rows;
+
+    double acum = 0;
+    int vmin;
+    for (vmin = 0; vmin < 256 && acum < pmin; vmin++) {
+        acum += hist.at<float>(vmin);
+    }
+
+    acum = 0;
+    int vmax;
+    for (vmax = 255; vmax > 0 && acum < pmax; vmax--) {
+        acum += hist.at<float>(vmax);
+    }
+
+    if (vmax <= vmin)
+        vmax = vmin + 1;
+
+    double a = 255.0 / (vmax - vmin);
+    double b = -vmin * a;
+
+    Mat imgres;
+    foto[nfoto].img.convertTo(imgres, CV_8UC3, a, b);
+    imshow(foto[nfoto].nombre, imgres);
+
+    if (guardar) {
+        imgres.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void escala_color (int nfoto, int nres)
+{
+    Mat gris;
+    cvtColor(foto[nfoto].img, gris, COLOR_BGR2GRAY);
+    cvtColor(gris, gris, COLOR_GRAY2BGR);
+
+    // Tabla LUT
+    Mat lut(1, 256, CV_8UC3);
+    int vr = color_pincel.val[2], vg = color_pincel.val[1], vb = color_pincel.val[0];
+    for (int A = 0; A < 256; A++) {
+        if (A < 128) {
+            lut.at<Vec3b>(A) = Vec3b(vb * A / 128, vg * A / 128, vr * A / 128);
+        } else {
+            lut.at<Vec3b>(A) = Vec3b(vb + (255 - vb) * (A - 128) / 128,
+                                     vg + (255 - vg) * (A - 128) / 128,
+                                     vr + (255 - vr) * (A - 128) / 128);
+        }
+    }
+
+    Mat img;
+    LUT(gris, lut, img);
+    crear_nueva(nres, img);
+}
+
+//---------------------------------------------------------------------------
+
 void media_ponderada (int nf1, int nf2, int nueva, double peso)
 {
     Mat img= foto[nf1].img.clone();
@@ -597,6 +814,27 @@ void media_ponderada (int nf1, int nf2, int nueva, double peso)
     crear_nueva(nueva, img);
 }
 
+//---------------------------------------------------------------------------
+void ver_mat_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar) {
+    Mat hls;
+    cvtColor(foto[nfoto].img, hls, COLOR_BGR2HLS_FULL);
+    vector<Mat> canales;
+    split(hls,canales);
+    canales[0].convertTo(canales[0],CV_16S);
+    canales[0] += matiz;
+    bitwise_and(canales[0],Scalar(255),canales[0]);
+    canales[0].convertTo(canales[0],CV_8U);
+    canales[1] *= lum;
+    canales[2] *= sat;
+    merge(canales, hls);
+    Mat res;
+    cvtColor(hls,res,COLOR_HLS2BGR_FULL);
+    imshow(foto[nfoto].nombre,res);
+    if (guardar) {
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}
 //---------------------------------------------------------------------------
 
 string Lt1(string cadena)

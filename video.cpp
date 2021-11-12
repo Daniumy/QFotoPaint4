@@ -108,6 +108,40 @@ void media_a_nueva (int nfoto)
 
 //---------------------------------------------------------------------------
 
+void movimiento(string nombre, int nres)
+{
+    VideoCapture cap(nombre);
+    if (cap.isOpened()) {
+        Mat frame;
+        cap.read(frame);
+        Mat acum(frame.rows,frame.cols,CV_32SC3, Scalar(0,0,0));
+        Mat anterior = frame.clone();
+        while (cap.read(frame) && waitKey(1)==-1) {
+            namedWindow("Frame actual",0);
+            imshow("Frame actual", frame);
+            Mat dif;
+            absdiff(frame,anterior,dif);
+            dif.convertTo(dif,CV_32SC3);
+            acum += dif;
+            frame.copyTo(anterior);
+            Mat tmp;
+            normalize(acum,tmp,255,0,NORM_MINMAX,CV_8U);
+            namedWindow("Acumulado",0);
+            imshow("Acumulado",tmp);
+
+        }
+        Mat res;
+        normalize(acum,res,255,0,NORM_MINMAX, CV_8U);
+        crear_nueva(nres,res);
+        destroyWindow("Frame actual");
+        destroyWindow("Acumulado");
+    }
+    else {
+
+    }
+}
+
+//---------------------------------------------------------------------------
 void mostrar_camara (void)
 {
     Mat img;

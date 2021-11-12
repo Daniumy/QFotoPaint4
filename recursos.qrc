@@ -12,5 +12,10 @@
         <file>imagenes/rectangulo.png</file>
         <file>imagenes/rellenar.png</file>
         <file>imagenes/logo.gif</file>
+        <file>imagenes/histbase.png</file>
+        <file>imagenes/arena.jpg</file>
+        <file>imagenes/cielo.jpg</file>
+        <file>imagenes/madera.jpg</file>
+        <file>imagenes/gris.png</file>
     </qresource>
 </RCC>

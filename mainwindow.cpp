@@ -16,6 +16,11 @@ using namespace cv;
 #include "mediaponderada.h"
 #include "rotaravideo.h"
 #include "suavizados.h"
+#include "dajuste_lineal.h"
+#include "dcapturar_de_video.h"
+#include "dbajorrelive.h"
+#include "dmat_sat_lum.h"
+#include "video.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -347,5 +352,96 @@ void MainWindow::on_actionCapturar_de_c_mara_triggered()
 {
     if (primera_libre() != -1) {
         capturar_de_camara(primera_libre());
+    }
+}
+
+void MainWindow::on_toolButton_9_clicked()
+{
+    herr_actual = HER_ARCOIRIS;
+}
+
+void MainWindow::on_actionArco_iris_triggered()
+{
+    herr_actual = HER_ARCOIRIS;
+    ui->toolButton_9->setChecked(true);
+}
+
+void MainWindow::on_actionGris_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 3);
+    }
+}
+
+void MainWindow::on_actionRojo_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 2);
+    }
+}
+
+void MainWindow::on_actionVerde_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 1);
+    }
+}
+
+void MainWindow::on_actionAzul_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma(foto_activa(), primera_libre(), 0);
+    }
+}
+
+void MainWindow::on_actionEscala_de_grises_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        escala_color(foto_activa(), primera_libre());
+    }
+}
+
+void MainWindow::on_actionAjuste_lineal_del_histograma_triggered()
+{
+    if (foto_activa() != -1) {
+        dajuste_lineal dal(foto_activa());
+        dal.exec();
+    }
+
+}
+
+void MainWindow::on_actionCapturar_de_v_deo_triggered()
+{
+    QString nombre = QFileDialog::getOpenFileName();
+
+    if (!nombre.isNull()) {
+        dcapturar_de_video cap(nombre);
+        if (cap.isOpened())
+            cap.exec();
+    }
+}
+
+void MainWindow::on_actionBajorrelieve_triggered()
+{
+    if (foto_activa() != -1) {
+        dbajorrelive db(foto_activa());
+        db.exec();
+    }
+}
+
+void MainWindow::on_actionMatiz_saturacion_luminosidad_triggered()
+{
+    if (foto_activa()!=-1) {
+        dmat_sat_lum dmsl(foto_activa());
+        dmsl.exec();
+    }
+}
+
+
+void MainWindow::on_actionMovimiento_triggered()
+{
+    if (primera_libre()!=-1){
+        QString nombre = QFileDialog::getOpenFileName();
+        movimiento(nombre.toLatin1().data(),primera_libre());
     }
 }

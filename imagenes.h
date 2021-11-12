@@ -40,7 +40,7 @@ struct ventana {
 //    Enumerado con los distintos tipos posibles de herramientas
 //    que se pueden usar. Añadir nuevas aquí
 
-enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_SELECCION, HER_RECTANGULO, HER_ELIPSE};
+enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_SELECCION, HER_RECTANGULO, HER_ELIPSE, HER_ARCOIRIS};
 
 
 ///////////////////////////////////////////////////////////////////
@@ -113,6 +113,8 @@ int foto_activa (void);
 int num_fotos (int &usadas, int &modificadas);
 // Devuelve el número de fotos que hay abiertas y modificadas actualmente
 
+void reset_callback(int nfoto);
+//Vuelve a poner el callback a una ventana
 ///////////////////////////////////////////////////////////////////
 /////////  FUNCIONES DE PROCESAMIENTO DE IMAGENES    //////////////
 ///////////////////////////////////////////////////////////////////
@@ -121,6 +123,7 @@ void invertir (int nfoto, int nres);
 // Invierte la imagen contenida en nfoto y la almacena en nres, que será una
 // nueva ventana
 
+void rotar_angulo (Mat imagen, Mat &imgRes, double angulo, double escala, int modo);
 void rotar_angulo (int nfoto, Mat &imgRes, double angulo, double escala= 1.0, int modo= 0);
 // Rota la imagen contenida en nfoto, en la cantidad grado
 // y la almacena el resultado en imgRes. La imagen de salida
@@ -133,16 +136,37 @@ void rotar_exacto (int nfoto, int nres, int grado);
 // y la almacena en nres. Se trata siempre de una rotación exacta
 
 void ver_brillo_contraste_gama (int nfoto, double suma, double prod,
-                           double gama, bool guardar= false);
+                                double gama, bool guardar= false);
 // Modifica la imagen en nfoto, tomando para cada píxel A(x,y) el valor:
 // A(x,y)*prod + suma. Si guardar==true se guarda la imagen, y en otro caso
 // solo se visualiza el resultado, pero sin guardar
+
+void ver_mat_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar = false);
+//Ajuste de matriz, saturación y luminosidad
+
 
 void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy,
                     bool guardar= false);
 // Modifica la imagen en nfoto, aplicando un suavizado de tamaño dado. ntipo
 // puede ser: 1=GAUSIANO; 2=MEDIA. Si guardar==true se guarda la imagen, y
 // en otro caso solo se visualiza el resultado, pero sin guardar
+
+void ver_bajorrelieve (int nfoto, double angulo, double grado, int ntextura, bool guardar = false);
+// Aplica un efecto de bajorrelieve a la imagen, pudiendo seleccionar
+// la dirección y cantidad del efecto. Se podrá seleccionar una textura de fondo, o
+// bien un fondo gris.
+
+void ver_histograma (int nfoto, int nres, int canal);
+// Mostrar el histograma de una imagen, ya sea del valor de gris o de los canales por
+// separado (R, G o B). Se debe usar un formato parecido al que se muestra a la derecha
+// (es decir, mostrando la escala horizontal y la vertical en la imagen del histograma resultante).
+
+void ajuste_lineal (int nfoto, double pmin, double pmax, bool guardar = false);
+// Operación de ajuste o estiramiento lineal del histograma. Se debe poder indicar
+// el porcentaje de píxeles que se dejan a la derecha y a la izquierda en el histograma.
+
+void escala_color (int nfoto, int nres);
+// Convertir una imagen a escala de grises o escaa de color, según el color seleccionado actualmente.
 
 void media_ponderada (int nf1, int nf2, int nueva, double peso);
 // Calcula la media ponderada entre la imagen nf1 y la nf2, según el peso dado,

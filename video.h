@@ -37,4 +37,7 @@ void capturar_de_camara (int nres);
 // previsualizar la entrada de la cámara, pulsando una tecla o un botón cuando
 // se quiera capturar una imagen
 
+void movimiento(string nombre, int nres);
+//Calcula el movimiento acumulado en un vídeo
+
 #endif // VIDEO_H

@@ -362,6 +362,25 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QToolButton" name="toolButton_9">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>0</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Arcoiris</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -379,6 +398,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionNueva_imagen"/>
     <addaction name="actionAbrir_imagen"/>
     <addaction name="actionCapturar_de_c_mara"/>
+    <addaction name="actionCapturar_de_v_deo"/>
     <addaction name="separator"/>
     <addaction name="actionGuardar"/>
     <addaction name="actionGuardar_como"/>
@@ -397,10 +417,21 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionColor_del_pincel"/>
      <addaction name="actionPreguntar_si_guardar"/>
     </widget>
+    <widget class="QMenu" name="menuHistograma">
+     <property name="title">
+      <string>Histograma</string>
+     </property>
+     <addaction name="actionGris"/>
+     <addaction name="separator"/>
+     <addaction name="actionRojo"/>
+     <addaction name="actionVerde"/>
+     <addaction name="actionAzul"/>
+    </widget>
     <addaction name="actionSeleccionar_todo"/>
     <addaction name="actionCopiar_a_nueva"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
+    <addaction name="menuHistograma"/>
    </widget>
    <widget class="QMenu" name="menuHerramientas">
     <property name="title">
@@ -411,6 +442,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionSeleccionar"/>
     <addaction name="actionRect_ngulo"/>
     <addaction name="actionElipse"/>
+    <addaction name="actionArco_iris"/>
    </widget>
    <widget class="QMenu" name="menuTransformar">
     <property name="title">
@@ -428,6 +460,9 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
     <addaction name="actionMedia_ponderada"/>
+    <addaction name="actionEscala_de_grises"/>
+    <addaction name="actionAjuste_lineal_del_histograma"/>
+    <addaction name="actionMatiz_saturacion_luminosidad"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -442,6 +477,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionMediana"/>
     </widget>
     <addaction name="menuSuavizado"/>
+    <addaction name="actionBajorrelieve"/>
    </widget>
    <widget class="QMenu" name="menuV_deo">
     <property name="title">
@@ -458,6 +494,7 @@ p, li { white-space: pre-wrap; }
       <string>Vídeo a imagen</string>
      </property>
      <addaction name="actionImagen_media"/>
+     <addaction name="actionMovimiento"/>
     </widget>
     <addaction name="menuImagen_a_v_deo"/>
     <addaction name="menuV_deo_a_imagen"/>
@@ -627,6 +664,61 @@ p, li { white-space: pre-wrap; }
   <action name="actionCapturar_de_c_mara">
    <property name="text">
     <string>Capturar de cámara...</string>
+   </property>
+  </action>
+  <action name="actionArco_iris">
+   <property name="text">
+    <string>Arcoiris</string>
+   </property>
+  </action>
+  <action name="actionGris">
+   <property name="text">
+    <string>Gris</string>
+   </property>
+  </action>
+  <action name="actionRojo">
+   <property name="text">
+    <string>Rojo</string>
+   </property>
+  </action>
+  <action name="actionVerde">
+   <property name="text">
+    <string>Verde</string>
+   </property>
+  </action>
+  <action name="actionAzul">
+   <property name="text">
+    <string>Azul</string>
+   </property>
+  </action>
+  <action name="actionEscala_de_grises">
+   <property name="text">
+    <string>Escala de color</string>
+   </property>
+  </action>
+  <action name="actionAjuste_lineal_del_histograma">
+   <property name="text">
+    <string>Ajuste lineal del histograma...</string>
+   </property>
+  </action>
+  <action name="actionCapturar_de_v_deo">
+   <property name="text">
+    <string>Capturar de vídeo...</string>
+   </property>
+  </action>
+  <action name="actionBajorrelieve">
+   <property name="text">
+    <string>Bajorrelieve..</string>
+   </property>
+  </action>
+  <action name="actionMatiz_saturacion_luminosidad">
+   <property name="text">
+    <string>Matiz/saturacion/luminosidad</string>
+   </property>
+  </action>
+  <action name="actionMovimiento">
+   <property name="text">
+    <string>Movimiento..</string>
    </property>
   </action>
  </widget>
