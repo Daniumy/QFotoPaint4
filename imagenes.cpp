@@ -99,8 +99,8 @@ void reset_callback(int nfoto){
 //---------------------------------------------------------------------------
 
 void crear_nueva (int nfoto, Mat img)
-{
-    assert(nfoto>=0 && nfoto<MAX_VENTANAS && !foto[nfoto].usada && !img.empty());
+{//&& !img.empty()
+    assert(nfoto>=0 && nfoto<MAX_VENTANAS && !foto[nfoto].usada );
     foto[nfoto].nombre= "nueva-"+to_string(nfoto)+".png";
     foto[nfoto].nombref= foto[nfoto].nombre;
     foto[nfoto].img= img;

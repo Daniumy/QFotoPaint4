@@ -1,6 +1,7 @@
 #include "dmat_sat_lum.h"
 #include "ui_dmat_sat_lum.h"
 #include "imagenes.h"
+
 dmat_sat_lum::dmat_sat_lum(int numfoto,  QWidget *parent) :
     QDialog(parent),
     ui(new Ui::dmat_sat_lum)

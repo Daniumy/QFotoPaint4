@@ -1,8 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QApplication>
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QMimeData>
+#include <QClipboard>
+#include <QDebug>
 
 #include <opencv2/opencv.hpp>
 using namespace cv;
@@ -443,5 +447,20 @@ void MainWindow::on_actionMovimiento_triggered()
     if (primera_libre()!=-1){
         QString nombre = QFileDialog::getOpenFileName();
         movimiento(nombre.toLatin1().data(),primera_libre());
+    }
+}
+
+void MainWindow::on_actionNueva_desde_el_portapapeles_triggered()
+{
+    int pl= comprobar_primera_libre();
+    if (pl!=1) {
+        const QClipboard *clipboard = QApplication::clipboard();
+        QImage image = clipboard->image();
+        if (image.isNull()){
+            qDebug() << "Hello World";
+        }
+        cv::Mat mat(image.height(), image.width(),CV_8UC3, image.bits());
+        crear_nueva(pl,mat);
+
     }
 }

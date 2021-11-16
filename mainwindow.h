@@ -75,6 +75,7 @@ private slots:
     void on_actionBajorrelieve_triggered();
     void on_actionMatiz_saturacion_luminosidad_triggered();
     void on_actionMovimiento_triggered();
+    void on_actionNueva_desde_el_portapapeles_triggered();
 };
 
 extern MainWindow *w;
