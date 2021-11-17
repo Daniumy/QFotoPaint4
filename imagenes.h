@@ -181,4 +181,9 @@ void copiar_a_nueva (int nfoto, int nres);
 // Crea una nueva imagen con el ROI de la imagen actual. Si no hay ROI seleccionado,
 // se debe copiar toda la imagen actual
 
+void nueva_desde_portapapeles(int pl);
+//Crea una nueva imagen de la que se encuentra en el portapapeles de windows.
+
+void copiar_al_portapapeles(int nfoto);
+//Copia la el ROI de la imagen actual y lo copia en el portapapeles
 #endif // IMAGENES_H

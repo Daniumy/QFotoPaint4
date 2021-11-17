@@ -7,10 +7,15 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <assert.h>
+#include <QClipboard>
+#include <QImage>
+#include <QDebug>
 
 ///////////////////////////////////////////////////////////////////
 /////////  VARIABLES GLOBALES                        //////////////
 ///////////////////////////////////////////////////////////////////
+Mat mataux;
+QImage imagenaux;
 
 ventana foto[MAX_VENTANAS];
 
@@ -851,3 +856,28 @@ void copiar_a_nueva (int nfoto, int nres)
 }
 
 //---------------------------------------------------------------------------
+
+void nueva_desde_portapapeles(int pl)
+{
+    const QClipboard *clipboard = QApplication::clipboard();
+    QImage image = clipboard->image();
+    if (!image.isNull()){
+        cv::Mat mat(image.height(), image.width(),CV_8UC4, image.bits());
+        cvtColor(mat, mat, COLOR_RGBA2RGB);
+        crear_nueva(pl,mat);
+    }
+    else {
+        qDebug() << "La imagen es nula ";
+    }
+}
+
+//---------------------------------------------------------------------------
+void copiar_al_portapapeles(int nfoto){
+    mataux = foto[nfoto].img(foto[nfoto].roi).clone();
+    QClipboard *clipboard = QApplication::clipboard();
+    cvtColor(mataux, mataux, COLOR_RGB2RGBA);
+    QImage img((uchar*)mataux.data, mataux.cols, mataux.rows, QImage::Format_RGB32);
+    clipboard->setImage(img);
+}
+
+

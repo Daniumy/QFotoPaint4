@@ -453,14 +453,29 @@ void MainWindow::on_actionMovimiento_triggered()
 void MainWindow::on_actionNueva_desde_el_portapapeles_triggered()
 {
     int pl= comprobar_primera_libre();
-    if (pl!=1) {
-        const QClipboard *clipboard = QApplication::clipboard();
-        QImage image = clipboard->image();
-        if (image.isNull()){
-            qDebug() << "Hello World";
-        }
-        cv::Mat mat(image.height(), image.width(),CV_8UC3, image.bits());
-        crear_nueva(pl,mat);
-
+    if (pl!=-1) {
+        nueva_desde_portapapeles(pl);
     }
+}
+
+void MainWindow::on_actionCopiar_al_portapapeles_triggered()
+{
+    if (foto_activa() != 1){
+         copiar_al_portapapeles(foto_activa());
+    }
+
+    //Seleccionar todo
+//    int fa= foto_activa();
+//    if (fa!=-1) {
+//        foto[fa].roi= Rect(0, 0, foto[fa].img.cols, foto[fa].img.rows);
+//        mostrar(fa);
+//    }
+
+
+
+    //copiar a nueva
+    //if (foto_activa() != 1 && primera_libre() != -1)
+    //copiar_a_nueva(foto_activa(), primera_libre()); ((int nfoto, int nres))
+        //crear_nueva(nres, foto[nfoto].img(foto[nfoto].roi).clone());  (nfoto,mat image)
+
 }
