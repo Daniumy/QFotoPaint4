@@ -460,22 +460,13 @@ void MainWindow::on_actionNueva_desde_el_portapapeles_triggered()
 
 void MainWindow::on_actionCopiar_al_portapapeles_triggered()
 {
-    if (foto_activa() != 1){
-         copiar_al_portapapeles(foto_activa());
+    int fotoA = foto_activa();
+    if (fotoA != 1){
+         copiar_al_portapapeles(fotoA);
     }
+}
 
-    //Seleccionar todo
-//    int fa= foto_activa();
-//    if (fa!=-1) {
-//        foto[fa].roi= Rect(0, 0, foto[fa].img.cols, foto[fa].img.rows);
-//        mostrar(fa);
-//    }
-
-
-
-    //copiar a nueva
-    //if (foto_activa() != 1 && primera_libre() != -1)
-    //copiar_a_nueva(foto_activa(), primera_libre()); ((int nfoto, int nres))
-        //crear_nueva(nres, foto[nfoto].img(foto[nfoto].roi).clone());  (nfoto,mat image)
-
+void MainWindow::on_actionDeshacer_acci_n_triggered()
+{
+    deshacer_accion(foto_activa());
 }

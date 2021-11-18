@@ -78,6 +78,7 @@ private slots:
     void on_actionNueva_desde_el_portapapeles_triggered();
     void on_actionCopiar_al_portapapeles_triggered();
 
+    void on_actionDeshacer_acci_n_triggered();
 };
 
 extern MainWindow *w;

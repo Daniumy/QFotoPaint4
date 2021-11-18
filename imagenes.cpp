@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #include "imagenes.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -16,6 +15,8 @@
 ///////////////////////////////////////////////////////////////////
 Mat mataux;
 QImage imagenaux;
+
+QList<Mat> lista;
 
 ventana foto[MAX_VENTANAS];
 
@@ -299,6 +300,8 @@ void cb_punto (int factual, int x, int y)
 
 void cb_linea (int factual, int x, int y)
 {
+    Mat res= foto[factual].img.clone();
+    lista.append(res);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         line(im, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2+1);
@@ -874,10 +877,16 @@ void nueva_desde_portapapeles(int pl)
 //---------------------------------------------------------------------------
 void copiar_al_portapapeles(int nfoto){
     mataux = foto[nfoto].img(foto[nfoto].roi).clone();
-    QClipboard *clipboard = QApplication::clipboard();
     cvtColor(mataux, mataux, COLOR_RGB2RGBA);
+    QClipboard *clipboard = QApplication::clipboard();
     QImage img((uchar*)mataux.data, mataux.cols, mataux.rows, QImage::Format_RGB32);
     clipboard->setImage(img);
+}
+
+
+//---------------------------------------------------------------------------
+void deshacer_accion(int factual) {
+    foto[factual].img = lista.takeLast();
 }
 
 

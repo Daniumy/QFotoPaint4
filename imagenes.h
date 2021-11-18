@@ -186,4 +186,6 @@ void nueva_desde_portapapeles(int pl);
 
 void copiar_al_portapapeles(int nfoto);
 //Copia la el ROI de la imagen actual y lo copia en el portapapeles
+
+void deshacer_accion(int factual);
 #endif // IMAGENES_H

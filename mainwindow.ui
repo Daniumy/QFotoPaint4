@@ -430,6 +430,7 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="actionSeleccionar_todo"/>
     <addaction name="actionCopiar_a_nueva"/>
+    <addaction name="actionDeshacer_acci_n"/>
     <addaction name="actionCopiar_al_portapapeles"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
@@ -731,6 +732,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionCopiar_al_portapapeles">
    <property name="text">
     <string>Copiar al portapapeles</string>
+   </property>
+  </action>
+  <action name="actionDeshacer_acci_n">
+   <property name="text">
+    <string>Deshacer acción</string>
    </property>
   </action>
  </widget>
