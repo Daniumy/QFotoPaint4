@@ -253,6 +253,8 @@ void cb_close (int factual)
 
 void cb_punto (int factual, int x, int y)
 {
+    Mat res= foto[factual].img.clone();
+    lista.append(res);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
@@ -370,6 +372,8 @@ void cb_ver_seleccion (int factual, int x, int y, bool foto_roi)
 
 void cb_rectangulo (int factual, int x, int y)
 {
+    Mat res= foto[factual].img.clone();
+    lista.append(res);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         rectangle(im, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2-1);
@@ -400,6 +404,8 @@ void cb_ver_rectangulo (int factual, int x, int y)
 
 void cb_elipse (int factual, int x, int y)
 {
+    Mat res= foto[factual].img.clone();
+    lista.append(res);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         ellipse(im, Point(downx, downy), Size(abs(x - downx), abs(y - downy)), 0, 0, 360, color_pincel, radio_pincel-1);
@@ -436,6 +442,8 @@ int PALAI[3][24] = {
 
 void cb_arcoiris (int factual, int x, int y)
 {
+    Mat res= foto[factual].img.clone();
+    lista.append(res);
     static int pos = 0;
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
@@ -886,7 +894,10 @@ void copiar_al_portapapeles(int nfoto){
 
 //---------------------------------------------------------------------------
 void deshacer_accion(int factual) {
-    foto[factual].img = lista.takeLast();
+    if (!lista.isEmpty()){
+        foto[factual].img = lista.takeLast();
+    }
+
 }
 
 
