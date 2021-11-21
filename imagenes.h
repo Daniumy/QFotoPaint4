@@ -2,6 +2,7 @@
 #define IMAGENES_H
 
 #include <string>
+#include <QList>
 using namespace std;
 #include <opencv2/opencv.hpp>
 using namespace cv;
@@ -34,6 +35,7 @@ struct ventana {
     int orden;           // Número de orden entre las ventanas abiertas
     Rect roi;            // Región de interés seleccionada
     Mat img;             // Imagen almacenada en esta posición
+    QList<Mat> lista;    // Lista de imagenes anteriores a cierta acción
 };
 
 // ENUM tipo_herramienta
@@ -144,6 +146,8 @@ void ver_brillo_contraste_gama (int nfoto, double suma, double prod,
 void ver_mat_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar = false);
 //Ajuste de matriz, saturación y luminosidad
 
+void ver_pinchar_estirar(int nfoto, int cx, int cy, double radio, double a, bool guardar=false);
+//Transformaciones geométricas de pinchar/estirar una imagen.
 
 void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy,
                     bool guardar= false);
@@ -188,4 +192,6 @@ void copiar_al_portapapeles(int nfoto);
 //Copia la el ROI de la imagen actual y lo copia en el portapapeles
 
 void deshacer_accion(int factual);
+
+void anadir_accion_a_lista(int factual);
 #endif // IMAGENES_H

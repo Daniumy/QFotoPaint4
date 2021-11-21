@@ -25,6 +25,7 @@ using namespace cv;
 #include "dbajorrelive.h"
 #include "dmat_sat_lum.h"
 #include "video.h"
+#include "dpinchar.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -469,4 +470,12 @@ void MainWindow::on_actionCopiar_al_portapapeles_triggered()
 void MainWindow::on_actionDeshacer_acci_n_triggered()
 {
     deshacer_accion(foto_activa());
+}
+
+void MainWindow::on_actionPinchar_estirar_triggered()
+{
+    if (foto_activa()!=-1){
+        dpinchar dp(foto_activa());
+        dp.exec();
+    }
 }

@@ -79,6 +79,7 @@ private slots:
     void on_actionCopiar_al_portapapeles_triggered();
 
     void on_actionDeshacer_acci_n_triggered();
+    void on_actionPinchar_estirar_triggered();
 };
 
 extern MainWindow *w;

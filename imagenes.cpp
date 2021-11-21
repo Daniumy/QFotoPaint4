@@ -14,9 +14,6 @@
 /////////  VARIABLES GLOBALES                        //////////////
 ///////////////////////////////////////////////////////////////////
 Mat mataux;
-QImage imagenaux;
-
-QList<Mat> lista;
 
 ventana foto[MAX_VENTANAS];
 
@@ -253,8 +250,8 @@ void cb_close (int factual)
 
 void cb_punto (int factual, int x, int y)
 {
-    Mat res= foto[factual].img.clone();
-    lista.append(res);
+    qDebug("entró");
+    anadir_accion_a_lista(factual);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
@@ -302,8 +299,7 @@ void cb_punto (int factual, int x, int y)
 
 void cb_linea (int factual, int x, int y)
 {
-    Mat res= foto[factual].img.clone();
-    lista.append(res);
+    anadir_accion_a_lista(factual);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         line(im, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2+1);
@@ -372,8 +368,7 @@ void cb_ver_seleccion (int factual, int x, int y, bool foto_roi)
 
 void cb_rectangulo (int factual, int x, int y)
 {
-    Mat res= foto[factual].img.clone();
-    lista.append(res);
+    anadir_accion_a_lista(factual);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         rectangle(im, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2-1);
@@ -404,8 +399,7 @@ void cb_ver_rectangulo (int factual, int x, int y)
 
 void cb_elipse (int factual, int x, int y)
 {
-    Mat res= foto[factual].img.clone();
-    lista.append(res);
+    anadir_accion_a_lista(factual);
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         ellipse(im, Point(downx, downy), Size(abs(x - downx), abs(y - downy)), 0, 0, 360, color_pincel, radio_pincel-1);
@@ -442,8 +436,7 @@ int PALAI[3][24] = {
 
 void cb_arcoiris (int factual, int x, int y)
 {
-    Mat res= foto[factual].img.clone();
-    lista.append(res);
+    anadir_accion_a_lista(factual);
     static int pos = 0;
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
@@ -654,7 +647,36 @@ void ver_brillo_contraste_gama (int nfoto, double suma, double prod, double gama
         foto[nfoto].modificada= true;
     }
 }
+//---------------------------------------------------------------------------
+void ver_pinchar_estirar(int nfoto, int cx, int cy, double radio, double a, bool guardar)
+{
+    Mat S(foto[nfoto].img.rows,foto[nfoto].img.cols,CV_32FC1);
+    radio*=radio;
+    a*=radio;
+    for (int y = 0; y <S.rows;y++)
+        for (int x= 0; x<S.cols;x++)
+            //S.at<float>(y,x)= sin(0.03+sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))+a);
+            S.at<float>(y,x)= exp(-((x-cx)*(x-cx)+(y-cy)*(y-cy))/radio);
 
+    Mat Gx,Gy;
+    Sobel(S,Gx,CV_32F,1,0);
+    Sobel(S,Gy,CV_32F,0,1);
+    multiply(S,Gx,Gx,a);
+    multiply(S,Gy,Gy,a);
+
+    for (int y = 0; y <S.rows;y++)
+        for (int x= 0; x<S.cols;x++){
+            Gx.at<float>(y,x)= x + Gx.at<float>(y,x);
+            Gy.at<float>(y,x)= y + Gy.at<float>(y,x);
+        }
+    Mat res;
+    remap(foto[nfoto].img,res,Gx,Gy,INTER_LINEAR,BORDER_REFLECT);
+    imshow("Pinchar/estirar",res);
+    if (guardar) {
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}
 //---------------------------------------------------------------------------
 
 void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
@@ -894,10 +916,22 @@ void copiar_al_portapapeles(int nfoto){
 
 //---------------------------------------------------------------------------
 void deshacer_accion(int factual) {
-    if (!lista.isEmpty()){
-        foto[factual].img = lista.takeLast();
+    if (!foto[factual].lista.isEmpty()){
+        qDebug("entra a quitar o no");
+        foto[factual].img = foto[factual].lista.takeLast(); //el punto y arcoiris
+        imshow(foto[factual].nombre,foto[factual].img.clone());
     }
+}
 
+//---------------------------------------------------------------------------
+void anadir_accion_a_lista(int factual) {
+
+    Mat res= foto[factual].img.clone();
+    if (foto[factual].lista.size() >= 3)
+    {
+        foto[factual].lista.removeFirst();
+    }
+    foto[factual].lista.append(res);
 }
 
 
