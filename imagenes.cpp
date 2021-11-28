@@ -15,6 +15,9 @@
 ///////////////////////////////////////////////////////////////////
 Mat mataux;
 
+bool first_time_punto = true;
+bool first_time_arcoiris = true;
+
 ventana foto[MAX_VENTANAS];
 
 tipo_herramienta herr_actual= HER_PUNTO;
@@ -250,9 +253,7 @@ void cb_close (int factual)
 
 void cb_punto (int factual, int x, int y)
 {
-    qDebug("entró");
-    anadir_accion_a_lista(factual);
-    Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
+    Mat im= foto[factual].img; // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
     else {
@@ -294,7 +295,14 @@ void cb_punto (int factual, int x, int y)
     imshow(foto[factual].nombre, foto[factual].img);
     foto[factual].modificada= true;
 }
+//---------------------------------------------------------------------------
 
+void cb_ver_punto (int factual, int x, int y)
+{
+    Mat res= foto[factual].img.clone();
+    circle(res, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
+    imshow(foto[factual].nombre, res);
+}
 //---------------------------------------------------------------------------
 
 void cb_linea (int factual, int x, int y)
@@ -436,7 +444,6 @@ int PALAI[3][24] = {
 
 void cb_arcoiris (int factual, int x, int y)
 {
-    anadir_accion_a_lista(factual);
     static int pos = 0;
     Mat im= foto[factual].img;  // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
@@ -512,8 +519,16 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
 
     // 2.1. Herramienta PUNTO
     case HER_PUNTO:
-        if (flags==EVENT_FLAG_LBUTTON)
+        if (event == EVENT_LBUTTONUP)
+            first_time_punto = true;
+        else if (flags==EVENT_FLAG_LBUTTON){
+            if (first_time_punto)
+            {
+                anadir_accion_a_lista(factual);
+                first_time_punto = false;
+            }
             cb_punto(factual, x, y);
+        }
         else
             ninguna_accion(factual, x, y);
         break;
@@ -558,11 +573,21 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
 
         // 2.6. Herramienta ARCOIRIS
     case HER_ARCOIRIS:
-        if (flags==EVENT_FLAG_LBUTTON)
+        if (event == EVENT_LBUTTONUP)
+            first_time_arcoiris = true;
+        else if (flags==EVENT_FLAG_LBUTTON)
+        {
+            if (first_time_arcoiris)
+            {
+               anadir_accion_a_lista(factual);
+               first_time_arcoiris = false;
+            }
             cb_arcoiris(factual, x, y);
+        }
         else
             ninguna_accion(factual, x, y);
         break;
+
     }
 }
 
@@ -925,7 +950,7 @@ void deshacer_accion(int factual) {
 
 //---------------------------------------------------------------------------
 void anadir_accion_a_lista(int factual) {
-
+    //qDebug("he entrado a añadir a lista");
     Mat res= foto[factual].img.clone();
     if (foto[factual].lista.size() >= 3)
     {
