@@ -26,6 +26,7 @@ using namespace cv;
 #include "dmat_sat_lum.h"
 #include "video.h"
 #include "dpinchar.h"
+#include "dperspectiva.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -476,6 +477,14 @@ void MainWindow::on_actionPinchar_estirar_triggered()
 {
     if (foto_activa()!=-1){
         dpinchar dp(foto_activa());
+        dp.exec();
+    }
+}
+
+void MainWindow::on_actionPerspectiva_triggered()
+{
+    if (foto_activa() != -1){
+        dperspectiva dp;
         dp.exec();
     }
 }

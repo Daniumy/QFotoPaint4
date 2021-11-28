@@ -466,6 +466,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionEscala_de_grises"/>
     <addaction name="actionAjuste_lineal_del_histograma"/>
     <addaction name="actionMatiz_saturacion_luminosidad"/>
+    <addaction name="actionPerspectiva"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -743,6 +744,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPinchar_estirar">
    <property name="text">
     <string>Pinchar/estirar</string>
+   </property>
+  </action>
+  <action name="actionPerspectiva">
+   <property name="text">
+    <string>Perspectiva...</string>
    </property>
   </action>
  </widget>

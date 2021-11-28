@@ -143,6 +143,12 @@ void ver_brillo_contraste_gama (int nfoto, double suma, double prod,
 // A(x,y)*prod + suma. Si guardar==true se guarda la imagen, y en otro caso
 // solo se visualiza el resultado, pero sin guardar
 
+void ver_perspectiva(int nfoto1, int nfoto2, Point2f pt1[],Point2f pt2[],bool guardar = false);
+//El usuario podrá seleccionar una imagen origen y una imagen
+//destino. El usuario podrá seleccionar 4 puntos en la imagen origen y 4 puntos en
+//la de destino. Y al pinchar aceptar, se hará la correspondiente transformación
+//perspectiva de la imagen origen al destino
+
 void ver_mat_sat_lum(int nfoto, int matiz, double sat, double lum, bool guardar = false);
 //Ajuste de matriz, saturación y luminosidad
 
@@ -194,4 +200,5 @@ void copiar_al_portapapeles(int nfoto);
 void deshacer_accion(int factual);
 
 void anadir_accion_a_lista(int factual);
+
 #endif // IMAGENES_H

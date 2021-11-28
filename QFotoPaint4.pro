@@ -19,6 +19,7 @@ SOURCES += main.cpp\
     dbajorrelive.cpp \
     dcapturar_de_video.cpp \
     dmat_sat_lum.cpp \
+    dperspectiva.cpp \
     dpinchar.cpp \
     mainwindow.cpp \
     imagenes.cpp \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     dbajorrelive.h \
     dcapturar_de_video.h \
     dmat_sat_lum.h \
+    dperspectiva.h \
     dpinchar.h \
     imagenes.h \
     dialognueva.h \
@@ -54,6 +56,7 @@ FORMS    += mainwindow.ui \
     dialognueva.ui \
     brillocontraste.ui \
     dmat_sat_lum.ui \
+    dperspectiva.ui \
     dpinchar.ui \
     suavizados.ui \
     rotaravideo.ui \

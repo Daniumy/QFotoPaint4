@@ -655,6 +655,31 @@ void rotar_exacto (int nfoto, int nres, int grado)
     crear_nueva(nres, salida);
 }
 
+
+void ver_perspectiva(int nfoto1, int nfoto2, Point2f pt1[],Point2f pt2[],bool guardar)
+{
+    Mat M = getPerspectiveTransform(pt1, pt2);
+    Mat res = foto[nfoto2].img.clone();
+    warpPerspective(foto[nfoto1].img, res, M, res.size(),INTER_LINEAR, BORDER_TRANSPARENT);
+
+
+
+
+    if (guardar) {
+        res.copyTo(foto[nfoto2].img);
+        foto[nfoto2].modificada = true;
+        mostrar(nfoto2);
+    }
+    else {
+        for (int i = 0; i<4;i++)
+            line(res,pt2[i],pt2[(i+1)%4],CV_RGB(0,0,0),2);
+        for (int i = 0; i<4;i++)
+            circle(res,pt2[i],5,CV_RGB(0,255,0),-1);
+        namedWindow("Perspectiva",0);
+        imshow("Perspectiva",res);
+    }
+
+}
 //---------------------------------------------------------------------------
 
 void ver_brillo_contraste_gama (int nfoto, double suma, double prod, double gama, bool guardar)
