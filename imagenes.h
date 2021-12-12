@@ -201,4 +201,7 @@ void deshacer_accion(int factual);
 
 void anadir_accion_a_lista(int factual);
 
+QList<QString> ver_informacion(int factual);
+//Mostrar la información relevante de la imagen:
+//tamaño, profundidad, número de canales, memoria ocupada, color medio de la imagen, etc.
 #endif // IMAGENES_H

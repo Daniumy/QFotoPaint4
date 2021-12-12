@@ -967,7 +967,7 @@ void copiar_al_portapapeles(int nfoto){
 //---------------------------------------------------------------------------
 void deshacer_accion(int factual) {
     if (!foto[factual].lista.isEmpty()){
-        qDebug("entra a quitar o no");
+
         foto[factual].img = foto[factual].lista.takeLast(); //el punto y arcoiris
         imshow(foto[factual].nombre,foto[factual].img.clone());
     }
@@ -975,13 +975,43 @@ void deshacer_accion(int factual) {
 
 //---------------------------------------------------------------------------
 void anadir_accion_a_lista(int factual) {
-    //qDebug("he entrado a añadir a lista");
+
     Mat res= foto[factual].img.clone();
     if (foto[factual].lista.size() >= 3)
     {
         foto[factual].lista.removeFirst();
     }
     foto[factual].lista.append(res);
+}
+
+//---------------------------------------------------------------------------
+QList<QString> ver_informacion(int factual)
+{
+    Mat imagen = foto[factual].img;
+    QList<QString> lista;
+    char buffer[15];
+    sprintf(buffer,"%d x %d",imagen.rows,imagen.cols);
+    lista.push_front(buffer);
+
+    string profundidad = to_string(imagen.depth());
+    std::cout << "Thread # " << imagen.depth() << std::endl;
+    lista.push_front(QString::fromStdString(profundidad));
+
+    string canales = to_string(imagen.channels());
+    lista.push_front(QString::fromStdString(canales));
+
+    size_t sizeInBytes = imagen.step[0] * imagen.rows;
+    lista.push_front(QString::fromStdString(to_string(sizeInBytes)));
+
+    Scalar color = mean(imagen);
+    QColor media_color = QColor(color[2],color[1],color[0]);
+    QString estilo= "background-color: rgb(";
+    estilo+= QString::number(media_color.red())+",";
+    estilo+= QString::number(media_color.green())+",";
+    estilo+= QString::number(media_color.blue())+")";
+
+    lista.push_front(estilo);
+    return lista;
 }
 
 

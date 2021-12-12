@@ -81,6 +81,7 @@ private slots:
     void on_actionDeshacer_acci_n_triggered();
     void on_actionPinchar_estirar_triggered();
     void on_actionPerspectiva_triggered();
+    void on_actionVer_informaci_n_triggered();
 };
 
 extern MainWindow *w;

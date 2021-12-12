@@ -432,6 +432,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionCopiar_a_nueva"/>
     <addaction name="actionDeshacer_acci_n"/>
     <addaction name="actionCopiar_al_portapapeles"/>
+    <addaction name="actionVer_informaci_n"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
     <addaction name="menuHistograma"/>
@@ -749,6 +750,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionPerspectiva">
    <property name="text">
     <string>Perspectiva...</string>
+   </property>
+  </action>
+  <action name="actionVer_informaci_n">
+   <property name="text">
+    <string>Ver información</string>
    </property>
   </action>
  </widget>

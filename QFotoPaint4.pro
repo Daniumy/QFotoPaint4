@@ -18,6 +18,7 @@ SOURCES += main.cpp\
     dajuste_lineal.cpp \
     dbajorrelive.cpp \
     dcapturar_de_video.cpp \
+    dialoginformation.cpp \
     dmat_sat_lum.cpp \
     dperspectiva.cpp \
     dpinchar.cpp \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     dajuste_lineal.h \
     dbajorrelive.h \
     dcapturar_de_video.h \
+    dialoginformation.h \
     dmat_sat_lum.h \
     dperspectiva.h \
     dpinchar.h \
@@ -53,6 +55,7 @@ FORMS    += mainwindow.ui \
     dajuste_lineal.ui \
     dbajorrelive.ui \
     dcapturar_de_video.ui \
+    dialoginformation.ui \
     dialognueva.ui \
     brillocontraste.ui \
     dmat_sat_lum.ui \
