@@ -42,7 +42,7 @@ struct ventana {
 //    Enumerado con los distintos tipos posibles de herramientas
 //    que se pueden usar. Añadir nuevas aquí
 
-enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_SELECCION, HER_RECTANGULO, HER_ELIPSE, HER_ARCOIRIS};
+enum tipo_herramienta {HER_PUNTO, HER_LINEA, HER_SELECCION, HER_RECTANGULO, HER_ELIPSE, HER_ARCOIRIS,HER_RELLENAR,HER_SUAVIZADO,HER_TRAZAS};
 
 
 ///////////////////////////////////////////////////////////////////
@@ -204,4 +204,9 @@ void anadir_accion_a_lista(int factual);
 QList<QString> ver_informacion(int factual);
 //Mostrar la información relevante de la imagen:
 //tamaño, profundidad, número de canales, memoria ocupada, color medio de la imagen, etc.
+
+void ver_histograma_ecualizado(int nfoto, int nres);
+//Ecualizar el histograma de una imagen. El usuario debe poder elegir entre hacerlo de forma conjunta o
+//independiente por canales.
+
 #endif // IMAGENES_H

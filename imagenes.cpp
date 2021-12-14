@@ -17,7 +17,8 @@ Mat mataux;
 
 bool first_time_punto = true;
 bool first_time_arcoiris = true;
-
+bool first_time_trazas = true;
+int xtrazas,ytrazas;
 ventana foto[MAX_VENTANAS];
 
 tipo_herramienta herr_actual= HER_PUNTO;
@@ -303,6 +304,68 @@ void cb_ver_punto (int factual, int x, int y)
     circle(res, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
     imshow(foto[factual].nombre, res);
 }
+
+//---------------------------------------------------------------------------
+void cb_suavizar(int nfoto, int x, int y)
+{
+    assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
+    Mat img = foto[nfoto].img;
+
+//    Mat imgSuavizada= foto[nfoto].img.clone();
+//    GaussianBlur(imgSuavizada, imgSuavizada, Size(99,99), 4); //el 0 x el 4?
+//    Mat mask(img.size(), img.type(), CV_RGB(0,0,0));
+
+    std::cout << "Thread # " << x << "Thread # " << y<< std::endl;
+    int tam = radio_pincel + difum_pincel;
+    int posx = tam, posy = tam;
+    Rect roi(x - tam, y - tam, 2 * tam + 1, 2 * tam + 1);
+    // Comprobamos que no se sale del tam. maximo
+    if (roi.x < 0) {
+        roi.width += roi.x;
+        posx += roi.x;
+        roi.x = 0;
+    }
+
+    if (roi.y < 0) {
+        roi.height += roi.y;
+        posy += roi.y;
+        roi.y = 0;
+    }
+
+    if ((roi.x + roi.width) > img.cols) {
+        roi.width = img.cols - roi.x;
+    }
+
+    if ((roi.y + roi.height) > img.rows) {
+        roi.height = img.rows - roi.y;
+    }
+    GaussianBlur(img(roi), img(roi), Size(99,99), 4); //el 0 x el 4?
+    imshow(foto[nfoto].nombre, img);
+}
+
+void cb_ver_suavizado(int nfoto,int tamx, int tamy)
+{
+
+}
+//---------------------------------------------------------------------------
+
+void cb_rellenar(int factual,int x, int y)
+{
+    Mat res= foto[factual].img;
+    floodFill(res,Point(x,y),color_pincel,0,Scalar(255,255,255),Scalar(255,255,255),4); //quizas poner el 0 a null
+    imshow(foto[factual].nombre, foto[factual].img);
+    foto[factual].modificada= true;
+}
+
+
+
+//void cb_ver_rellenar(int factual,int x, int y)
+//{
+//    Mat res= foto[factual].img.clone();
+//    floodFill(res,Point(x,y),color_pincel,0,Scalar(255,255,255),Scalar(255,255,255),4);
+//    imshow(foto[factual].nombre, res);
+//}
+
 //---------------------------------------------------------------------------
 
 void cb_linea (int factual, int x, int y)
@@ -333,7 +396,28 @@ void cb_ver_linea (int factual, int x, int y)
     line(res, Point(downx, downy), Point(x,y), color_pincel, radio_pincel*2+1);
     imshow(foto[factual].nombre, res);
 }
+//---------------------------------------------------------------------------
+void cb_trazar(int factual,int x,int y)
+{
+    Mat im= foto[factual].img;
+    if (difum_pincel==0)
+        line(im, Point(xtrazas, ytrazas), Point(x,y), color_pincel, radio_pincel*2+1);
+    else {
+        Mat res(im.size(), im.type(), color_pincel);
+        Mat cop(im.size(), im.type(), CV_RGB(0,0,0));
+        line(cop, Point(xtrazas, ytrazas), Point(x,y), CV_RGB(255,255,255), radio_pincel*2+1);
+        blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
+        multiply(res, cop, res, 1.0/255.0);
+        bitwise_not(cop, cop);
+        multiply(im, cop, im, 1.0/255.0);
+        im= res + im;
+    }
 
+    xtrazas=x;
+    ytrazas=y;
+    imshow(foto[factual].nombre, im);
+    foto[factual].modificada= true;
+}
 //---------------------------------------------------------------------------
 
 void cb_seleccionar (int factual, int x, int y)
@@ -587,8 +671,39 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
         else
             ninguna_accion(factual, x, y);
         break;
-
+    case HER_RELLENAR:
+        if (flags==EVENT_FLAG_LBUTTON){
+            cb_rellenar(factual,x,y);
+//        else if (event==EVENT_MOUSEMOVE)
+//            cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
+        break;
+        }
+    case HER_SUAVIZADO:
+        if (event==EVENT_LBUTTONUP)
+            cb_suavizar(factual, x, y);
+        else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
+            ninguna_accion(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
+        break;
+    case HER_TRAZAS:
+        if (event == EVENT_LBUTTONUP)
+            first_time_trazas = true;
+        else if (flags==EVENT_FLAG_LBUTTON){
+            if (first_time_trazas)
+            {
+                xtrazas = downx;
+                ytrazas = downy;
+                anadir_accion_a_lista(factual);
+                first_time_trazas = false;
+            }
+            cb_trazar(factual, x, y);
+        }
+        else
+            ninguna_accion(factual, x, y);
+        break;
     }
+
 }
 
 
@@ -733,8 +848,9 @@ void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
 {
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img= foto[nfoto].img.clone();
-    if (ntipo==1)
-        GaussianBlur(foto[nfoto].img, img, Size(tamx, tamy), 0);
+    if (ntipo==1) {
+        std::cout << "Thread # " << tamx << "Thread # " << tamy << std::endl;
+        GaussianBlur(foto[nfoto].img, img, Size(tamx, tamy), 0);}
     else if (ntipo==2)
         blur(foto[nfoto].img, img, Size(tamx, tamy));
     else if (ntipo==3)
@@ -821,6 +937,19 @@ void ver_histograma (int nfoto, int nres, int canal)
     }
     crear_nueva(nres, imghist);
 }
+
+
+//---------------------------------------------------------------------------
+
+void ver_histograma_ecualizado(int nfoto, int nres)
+{
+    Mat img = foto[nfoto].img;
+    cvtColor(img, img, COLOR_BGR2GRAY);
+    Mat hist_equalized_image;
+    equalizeHist(img, hist_equalized_image);
+    crear_nueva(nres, hist_equalized_image);
+}
+
 
 //---------------------------------------------------------------------------
 
@@ -993,9 +1122,32 @@ QList<QString> ver_informacion(int factual)
     sprintf(buffer,"%d x %d",imagen.rows,imagen.cols);
     lista.push_front(buffer);
 
-    string profundidad = to_string(imagen.depth());
-    std::cout << "Thread # " << imagen.depth() << std::endl;
-    lista.push_front(QString::fromStdString(profundidad));
+    int profundidad = imagen.depth();
+    string profundidadString;
+    switch (profundidad) {
+    case 0:
+        profundidadString = "CV_8U";
+        break;
+    case 1:
+        profundidadString = "CV_8S";
+        break;
+    case 2:
+        profundidadString = "CV_16U";
+        break;
+    case 3:
+        profundidadString = "CV_16S";
+        break;
+    case 4:
+        profundidadString = "CV_32S";
+        break;
+    case 5:
+        profundidadString = "CV_32F";
+        break;
+    case 6:
+        profundidadString = "CV_64F";
+        break;
+    }
+    lista.push_front(QString::fromStdString(profundidadString));
 
     string canales = to_string(imagen.channels());
     lista.push_front(QString::fromStdString(canales));

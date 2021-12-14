@@ -497,3 +497,47 @@ void MainWindow::on_actionVer_informaci_n_triggered()
         di.exec();
     }
 }
+
+void MainWindow::on_toolButton_10_clicked()
+{
+    herr_actual = HER_RELLENAR;
+    ui->toolButton_10->setChecked(true);
+}
+
+void MainWindow::on_actionRellenar_triggered()
+{
+    herr_actual = HER_RELLENAR;
+    ui->toolButton_10->setChecked(true);
+}
+
+void MainWindow::on_toolButton_11_clicked()
+{
+    herr_actual = HER_SUAVIZADO;
+    ui->toolButton_11->setChecked(true);
+}
+
+void MainWindow::on_actionSuavizar_triggered()
+{
+    herr_actual = HER_SUAVIZADO;
+    ui->toolButton_11->setChecked(true);
+}
+
+void MainWindow::on_toolButton_12_clicked()
+{
+    herr_actual = HER_TRAZAS;
+    ui->toolButton_12->setChecked(true);
+}
+
+void MainWindow::on_actionTrazar_triggered()
+{
+    herr_actual = HER_TRAZAS;
+    ui->toolButton_12->setChecked(true);
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    ver_histograma_ecualizado(foto_activa(),primera_libre());
+}
+
+

@@ -82,6 +82,13 @@ private slots:
     void on_actionPinchar_estirar_triggered();
     void on_actionPerspectiva_triggered();
     void on_actionVer_informaci_n_triggered();
+    void on_toolButton_10_clicked();
+    void on_actionRellenar_triggered();
+    void on_toolButton_11_clicked();
+    void on_actionSuavizar_triggered();
+    void on_toolButton_12_clicked();
+    void on_actionTrazar_triggered();
+    void on_pushButton_2_clicked();
 };
 
 extern MainWindow *w;
