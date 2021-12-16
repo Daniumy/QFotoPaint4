@@ -311,11 +311,6 @@ void cb_suavizar(int nfoto, int x, int y)
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img = foto[nfoto].img;
 
-//    Mat imgSuavizada= foto[nfoto].img.clone();
-//    GaussianBlur(imgSuavizada, imgSuavizada, Size(99,99), 4); //el 0 x el 4?
-//    Mat mask(img.size(), img.type(), CV_RGB(0,0,0));
-
-    std::cout << "Thread # " << x << "Thread # " << y<< std::endl;
     int tam = radio_pincel + difum_pincel;
     int posx = tam, posy = tam;
     Rect roi(x - tam, y - tam, 2 * tam + 1, 2 * tam + 1);
@@ -339,32 +334,28 @@ void cb_suavizar(int nfoto, int x, int y)
     if ((roi.y + roi.height) > img.rows) {
         roi.height = img.rows - roi.y;
     }
+
+    img = img(roi);
+
     GaussianBlur(img(roi), img(roi), Size(99,99), 4); //el 0 x el 4?
     imshow(foto[nfoto].nombre, img);
+    qDebug("he entrao al cb suavizar lol");
 }
 
-void cb_ver_suavizado(int nfoto,int tamx, int tamy)
-{
-
-}
 //---------------------------------------------------------------------------
 
 void cb_rellenar(int factual,int x, int y)
 {
-    Mat res= foto[factual].img;
-    floodFill(res,Point(x,y),color_pincel,0,Scalar(255,255,255),Scalar(255,255,255),4); //quizas poner el 0 a null
-    imshow(foto[factual].nombre, foto[factual].img);
-    foto[factual].modificada= true;
+    anadir_accion_a_lista(factual);
+    Mat img = foto[factual].img;
+    Mat res= foto[factual].img.clone();
+    double peso = difum_pincel / 100.0;
+    floodFill(res,Point(x,y),color_pincel,0,Scalar::all(radio_pincel),Scalar::all(radio_pincel),0);
+    //Cálculo de la media ponderada
+    Mat cop;
+    resize(res, cop, img.size());
+    addWeighted(img, peso, cop, 1.0-peso, 0, img);
 }
-
-
-
-//void cb_ver_rellenar(int factual,int x, int y)
-//{
-//    Mat res= foto[factual].img.clone();
-//    floodFill(res,Point(x,y),color_pincel,0,Scalar(255,255,255),Scalar(255,255,255),4);
-//    imshow(foto[factual].nombre, res);
-//}
 
 //---------------------------------------------------------------------------
 
@@ -672,12 +663,13 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
     case HER_RELLENAR:
-        if (flags==EVENT_FLAG_LBUTTON){
+        if (event==EVENT_LBUTTONUP)
             cb_rellenar(factual,x,y);
-//        else if (event==EVENT_MOUSEMOVE)
-//            cb_ver_seleccion(factual, x, y, flags!=EVENT_FLAG_LBUTTON);
+        else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
+            ninguna_accion(factual, x, y);
+        else
+            ninguna_accion(factual, x, y);
         break;
-        }
     case HER_SUAVIZADO:
         if (event==EVENT_LBUTTONUP)
             cb_suavizar(factual, x, y);

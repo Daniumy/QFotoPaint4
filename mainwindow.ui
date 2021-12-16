@@ -118,7 +118,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="minimum">
-     <number>1</number>
+     <number>2</number>
     </property>
     <property name="maximum">
      <number>120</number>
@@ -389,7 +389,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>370</x>
       <y>0</y>
-      <width>43</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>
@@ -408,7 +408,7 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>410</x>
       <y>0</y>
-      <width>45</width>
+      <width>44</width>
       <height>41</height>
      </rect>
     </property>
@@ -425,9 +425,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QToolButton" name="toolButton_12">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>460</x>
       <y>0</y>
-      <width>45</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>
