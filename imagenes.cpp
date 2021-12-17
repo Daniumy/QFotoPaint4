@@ -1106,6 +1106,44 @@ void anadir_accion_a_lista(int factual) {
 }
 
 //---------------------------------------------------------------------------
+void convertir_color_falso(int factual,int nres)
+{
+        Mat img = foto[factual].img;
+        Mat imagen_falsa;
+        applyColorMap(img,imagen_falsa,4);
+        crear_nueva(nres,imagen_falsa);
+}
+
+void transformar_modelo_color(int factual,int nres, int tipo)
+{
+    Mat img = foto[factual].img.clone();
+    switch(tipo) {
+    case 0:
+        cvtColor(img, img, COLOR_RGB2HLS);
+        break;
+
+    case 1:
+        cvtColor(img, img, COLOR_RGB2HSV);
+        break;
+
+    case 2:
+        cvtColor(img, img, COLOR_RGB2XYZ);
+        break;
+
+    case 3:
+        cvtColor(img, img, COLOR_RGB2YUV);
+        break;
+    case 4:
+        cvtColor(img, img, COLOR_RGB2Lab);
+        break;
+    case 5:
+        cvtColor(img, img, COLOR_RGB2YCrCb);
+        break;
+    }
+    crear_nueva(nres,img);
+}
+
+//---------------------------------------------------------------------------
 QList<QString> ver_informacion(int factual)
 {
     Mat imagen = foto[factual].img;

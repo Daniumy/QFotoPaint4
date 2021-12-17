@@ -209,4 +209,9 @@ void ver_histograma_ecualizado(int nfoto, int nres);
 //Ecualizar el histograma de una imagen. El usuario debe poder elegir entre hacerlo de forma conjunta o
 //independiente por canales.
 
+void convertir_color_falso(int factual,int nres);
+//Conversión de escala de grises a una paleta de color falso
+
+void transformar_modelo_color(int factual,int nres, int tipo);
+//Aplicar transformaciones del modelo de color de la imagen, entre RGB, HLS, HSV, XYZ, YUV
 #endif // IMAGENES_H

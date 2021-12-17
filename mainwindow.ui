@@ -539,6 +539,17 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionRotar_180"/>
      <addaction name="actionRotar_91"/>
     </widget>
+    <widget class="QMenu" name="menuTransformar_modelo_de_color">
+     <property name="title">
+      <string>Transformar modelo de color</string>
+     </property>
+     <addaction name="actionHLS"/>
+     <addaction name="actionHSV"/>
+     <addaction name="actionXYZ"/>
+     <addaction name="actionYUV"/>
+     <addaction name="actionLab"/>
+     <addaction name="actionYCrCb"/>
+    </widget>
     <addaction name="actionBrillo_contraste"/>
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
@@ -547,6 +558,8 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionAjuste_lineal_del_histograma"/>
     <addaction name="actionMatiz_saturacion_luminosidad"/>
     <addaction name="actionPerspectiva"/>
+    <addaction name="actionConvertir_a_color_falso"/>
+    <addaction name="menuTransformar_modelo_de_color"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -849,6 +862,41 @@ p, li { white-space: pre-wrap; }
   <action name="actionTrazar">
    <property name="text">
     <string>Trazar</string>
+   </property>
+  </action>
+  <action name="actionConvertir_a_color_falso">
+   <property name="text">
+    <string>Convertir a color falso</string>
+   </property>
+  </action>
+  <action name="actionHLS">
+   <property name="text">
+    <string>HLS</string>
+   </property>
+  </action>
+  <action name="actionHSV">
+   <property name="text">
+    <string>HSV</string>
+   </property>
+  </action>
+  <action name="actionXYZ">
+   <property name="text">
+    <string>XYZ</string>
+   </property>
+  </action>
+  <action name="actionYUV">
+   <property name="text">
+    <string>YUV</string>
+   </property>
+  </action>
+  <action name="actionLab">
+   <property name="text">
+    <string>Lab</string>
+   </property>
+  </action>
+  <action name="actionYCrCb">
+   <property name="text">
+    <string>YCrCb</string>
    </property>
   </action>
  </widget>

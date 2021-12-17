@@ -89,6 +89,13 @@ private slots:
     void on_toolButton_12_clicked();
     void on_actionTrazar_triggered();
     void on_pushButton_2_clicked();
+    void on_actionConvertir_a_color_falso_triggered();
+    void on_actionHLS_triggered();
+    void on_actionHSV_triggered();
+    void on_actionXYZ_triggered();
+    void on_actionYUV_triggered();
+    void on_actionLab_triggered();
+    void on_actionYCrCb_triggered();
 };
 
 extern MainWindow *w;
