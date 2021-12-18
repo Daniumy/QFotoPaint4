@@ -254,6 +254,7 @@ void cb_close (int factual)
 
 void cb_punto (int factual, int x, int y)
 {
+    std::cout << "Thread1 # " << factual << std::endl;
     Mat im= foto[factual].img; // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
@@ -293,6 +294,7 @@ void cb_punto (int factual, int x, int y)
         multiply(im, cop, im, 1.0/255.0);
         im= res + im;
     }
+    std::cout << "Thread2 # " << factual << std::endl;
     imshow(foto[factual].nombre, foto[factual].img);
     foto[factual].modificada= true;
 }
@@ -1196,4 +1198,33 @@ QList<QString> ver_informacion(int factual)
     return lista;
 }
 
+//---------------------------------------------------------------------------
+void morfologia_matematica(int nfoto, int tipo,int iteraciones) {
+    Mat im = foto[nfoto].img;
+    Mat res;
+    switch (tipo) {
+    case 0:
+        for (int i = 0; i < iteraciones; i++) {
+            dilate(im,res,Mat());
+        }
+        break;
+    case 1:
+        for (int i = 0; i < iteraciones; i++) {
+            erode(im,res,Mat());
+        }
+        break;
+    case 2:
+        for (int i = 0; i < iteraciones; i++) {
+            morphologyEx(im, res, MORPH_OPEN,Mat());
+        }
+        break;
+    case 3:
+        for (int i = 0; i < iteraciones; i++) {
+            morphologyEx(im, res, MORPH_CLOSE,Mat());
+        }
+        break;
+    }
+    crear_nueva(primera_libre(),res);
+
+}
 

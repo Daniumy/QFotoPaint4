@@ -20,6 +20,7 @@ SOURCES += main.cpp\
     dcapturar_de_video.cpp \
     dialoginformation.cpp \
     dmat_sat_lum.cpp \
+    dmorfologia.cpp \
     dperspectiva.cpp \
     dpinchar.cpp \
     mainwindow.cpp \
@@ -39,6 +40,7 @@ HEADERS  += mainwindow.h \
     dcapturar_de_video.h \
     dialoginformation.h \
     dmat_sat_lum.h \
+    dmorfologia.h \
     dperspectiva.h \
     dpinchar.h \
     imagenes.h \
@@ -59,6 +61,7 @@ FORMS    += mainwindow.ui \
     dialognueva.ui \
     brillocontraste.ui \
     dmat_sat_lum.ui \
+    dmorfologia.ui \
     dperspectiva.ui \
     dpinchar.ui \
     suavizados.ui \

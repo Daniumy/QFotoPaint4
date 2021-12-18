@@ -214,4 +214,7 @@ void convertir_color_falso(int factual,int nres);
 
 void transformar_modelo_color(int factual,int nres, int tipo);
 //Aplicar transformaciones del modelo de color de la imagen, entre RGB, HLS, HSV, XYZ, YUV
+
+void morfologia_matematica(int nfoto, int tipo, int iteraciones);
+//Aplicar las diferentes operaciones de morfología matemática (dilatación, erosión, cerrar y abrir), indicando el número de iteraciones.
 #endif // IMAGENES_H

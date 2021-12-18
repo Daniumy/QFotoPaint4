@@ -576,6 +576,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuSuavizado"/>
     <addaction name="actionBajorrelieve"/>
     <addaction name="actionPinchar_estirar"/>
+    <addaction name="actionMorfolog_a"/>
    </widget>
    <widget class="QMenu" name="menuV_deo">
     <property name="title">
@@ -897,6 +898,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionYCrCb">
    <property name="text">
     <string>YCrCb</string>
+   </property>
+  </action>
+  <action name="actionMorfolog_a">
+   <property name="text">
+    <string>Morfología</string>
    </property>
   </action>
  </widget>
