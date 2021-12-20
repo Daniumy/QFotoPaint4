@@ -441,22 +441,6 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>50</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -550,6 +534,13 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionLab"/>
      <addaction name="actionYCrCb"/>
     </widget>
+    <widget class="QMenu" name="menuVer_histograma_ecualizado">
+     <property name="title">
+      <string>Ver histograma ecualizado</string>
+     </property>
+     <addaction name="actionConjunto"/>
+     <addaction name="actionIndependiente_por_canales"/>
+    </widget>
     <addaction name="actionBrillo_contraste"/>
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
@@ -560,6 +551,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionPerspectiva"/>
     <addaction name="actionConvertir_a_color_falso"/>
     <addaction name="menuTransformar_modelo_de_color"/>
+    <addaction name="menuVer_histograma_ecualizado"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -903,6 +895,16 @@ p, li { white-space: pre-wrap; }
   <action name="actionMorfolog_a">
    <property name="text">
     <string>Morfología</string>
+   </property>
+  </action>
+  <action name="actionConjunto">
+   <property name="text">
+    <string>Conjunto</string>
+   </property>
+  </action>
+  <action name="actionIndependiente_por_canales">
+   <property name="text">
+    <string>Independiente por canales</string>
    </property>
   </action>
  </widget>

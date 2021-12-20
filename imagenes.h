@@ -205,7 +205,7 @@ QList<QString> ver_informacion(int factual);
 //Mostrar la información relevante de la imagen:
 //tamaño, profundidad, número de canales, memoria ocupada, color medio de la imagen, etc.
 
-void ver_histograma_ecualizado(int nfoto, int nres);
+void ver_histograma_ecualizado(int nfoto, int nres,int tipo);
 //Ecualizar el histograma de una imagen. El usuario debe poder elegir entre hacerlo de forma conjunta o
 //independiente por canales.
 

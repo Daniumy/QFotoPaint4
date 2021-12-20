@@ -941,13 +941,22 @@ void ver_histograma (int nfoto, int nres, int canal)
 
 //---------------------------------------------------------------------------
 
-void ver_histograma_ecualizado(int nfoto, int nres)
+void ver_histograma_ecualizado(int nfoto, int nres,int tipo)
 {
     Mat img = foto[nfoto].img;
-    cvtColor(img, img, COLOR_BGR2GRAY);
-    Mat hist_equalized_image;
-    equalizeHist(img, hist_equalized_image);
-    crear_nueva(nres, hist_equalized_image);
+    Mat res;
+    if (tipo == 1) {
+        Mat hls;
+        cvtColor(img, hls, COLOR_BGR2HLS_FULL);
+        vector<Mat> canales;
+        split(hls,canales);
+        equalizeHist(canales[0],canales[0]);
+        equalizeHist(canales[1],canales[1]);
+        equalizeHist(canales[2],canales[2]);
+        merge(canales, hls);
+        cvtColor(hls,res,COLOR_HLS2BGR_FULL);
+    }
+    crear_nueva(nres, res);
 }
 
 
@@ -1085,7 +1094,7 @@ void nueva_desde_portapapeles(int pl)
 
 //---------------------------------------------------------------------------
 void copiar_al_portapapeles(int nfoto){
-    mataux = foto[nfoto].img(foto[nfoto].roi).clone();
+    mataux = foto[nfoto].img.clone();
     cvtColor(mataux, mataux, COLOR_RGB2RGBA);
     QClipboard *clipboard = QApplication::clipboard();
     QImage img((uchar*)mataux.data, mataux.cols, mataux.rows, QImage::Format_RGB32);

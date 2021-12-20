@@ -537,15 +537,6 @@ void MainWindow::on_actionTrazar_triggered()
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
-{
-    if (foto_activa() != -1 && primera_libre() != -1) {
-        ver_histograma_ecualizado(foto_activa(),primera_libre());
-    }
-}
-
-
-
 void MainWindow::on_actionConvertir_a_color_falso_triggered()
 {
     if (foto_activa() != -1){
@@ -604,5 +595,19 @@ void MainWindow::on_actionMorfolog_a_triggered()
     if (foto_activa() != -1){
         dmorfologia dm(foto_activa(),this);
         dm.exec();
+    }
+}
+
+void MainWindow::on_actionConjunto_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma_ecualizado(foto_activa(),primera_libre(),0);
+    }
+}
+
+void MainWindow::on_actionIndependiente_por_canales_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma_ecualizado(foto_activa(),primera_libre(),1);
     }
 }

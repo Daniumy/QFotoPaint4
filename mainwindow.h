@@ -88,7 +88,6 @@ private slots:
     void on_actionSuavizar_triggered();
     void on_toolButton_12_clicked();
     void on_actionTrazar_triggered();
-    void on_pushButton_2_clicked();
     void on_actionConvertir_a_color_falso_triggered();
     void on_actionHLS_triggered();
     void on_actionHSV_triggered();
@@ -97,6 +96,8 @@ private slots:
     void on_actionLab_triggered();
     void on_actionYCrCb_triggered();
     void on_actionMorfolog_a_triggered();
+    void on_actionConjunto_triggered();
+    void on_actionIndependiente_por_canales_triggered();
 };
 
 extern MainWindow *w;
