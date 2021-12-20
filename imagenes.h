@@ -209,12 +209,12 @@ void ver_histograma_ecualizado(int nfoto, int nres);
 //Ecualizar el histograma de una imagen. El usuario debe poder elegir entre hacerlo de forma conjunta o
 //independiente por canales.
 
-void convertir_color_falso(int factual,int nres);
+void convertir_color_falso(int factual,int nres,int color_map, bool guardar = false);
 //Conversión de escala de grises a una paleta de color falso
 
 void transformar_modelo_color(int factual,int nres, int tipo);
 //Aplicar transformaciones del modelo de color de la imagen, entre RGB, HLS, HSV, XYZ, YUV
 
-void morfologia_matematica(int nfoto, int tipo, int iteraciones);
+void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int abrir,bool guardar = false);
 //Aplicar las diferentes operaciones de morfología matemática (dilatación, erosión, cerrar y abrir), indicando el número de iteraciones.
 #endif // IMAGENES_H

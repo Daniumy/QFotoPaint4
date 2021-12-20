@@ -312,7 +312,6 @@ void cb_suavizar(int nfoto, int x, int y)
 {
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img = foto[nfoto].img;
-
     int tam = radio_pincel + difum_pincel;
     int posx = tam, posy = tam;
     Rect roi(x - tam, y - tam, 2 * tam + 1, 2 * tam + 1);
@@ -338,10 +337,17 @@ void cb_suavizar(int nfoto, int x, int y)
     }
 
     img = img(roi);
-
-    GaussianBlur(img(roi), img(roi), Size(99,99), 4); //el 0 x el 4?
-    imshow(foto[nfoto].nombre, img);
-    qDebug("he entrao al cb suavizar lol");
+    Mat cop(img.size(), img.type(), CV_RGB(0,0,0));
+    Mat res= img.clone();
+    GaussianBlur(res, res,Size(99,99), 4);
+    circle(cop, Point(posx, posy), radio_pincel, CV_RGB(255,255,255), -1, LINE_AA);
+    blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
+    multiply(res, cop, res, 1.0/255.0);
+    bitwise_not(cop, cop);
+    multiply(img, cop, img, 1.0/255.0);
+    img= res + img;
+    imshow(foto[nfoto].nombre, foto[nfoto].img);
+    foto[nfoto].modificada= true;
 }
 
 //---------------------------------------------------------------------------
@@ -1108,12 +1114,17 @@ void anadir_accion_a_lista(int factual) {
 }
 
 //---------------------------------------------------------------------------
-void convertir_color_falso(int factual,int nres)
+void convertir_color_falso(int factual,int nres,int color_map, bool guardar)
 {
+
         Mat img = foto[factual].img;
-        Mat imagen_falsa;
-        applyColorMap(img,imagen_falsa,4);
-        crear_nueva(nres,imagen_falsa);
+        Mat res;
+        applyColorMap(img,res,color_map);
+        imshow(foto[factual].nombre,res);
+        if (guardar) {
+            res.copyTo(foto[factual].img);
+            foto[factual].modificada = true;
+        }
 }
 
 void transformar_modelo_color(int factual,int nres, int tipo)
@@ -1199,32 +1210,33 @@ QList<QString> ver_informacion(int factual)
 }
 
 //---------------------------------------------------------------------------
-void morfologia_matematica(int nfoto, int tipo,int iteraciones) {
+void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int abrir, bool guardar) {
     Mat im = foto[nfoto].img;
     Mat res;
-    switch (tipo) {
-    case 0:
-        for (int i = 0; i < iteraciones; i++) {
+    if (dilatacion != 0) {
+        for (int i = 0; i < dilatacion; i++) {
             dilate(im,res,Mat());
         }
-        break;
-    case 1:
-        for (int i = 0; i < iteraciones; i++) {
+    }
+    if (erosion != 0) {
+        for (int i = 0; i < erosion; i++) {
             erode(im,res,Mat());
         }
-        break;
-    case 2:
-        for (int i = 0; i < iteraciones; i++) {
-            morphologyEx(im, res, MORPH_OPEN,Mat());
-        }
-        break;
-    case 3:
-        for (int i = 0; i < iteraciones; i++) {
-            morphologyEx(im, res, MORPH_CLOSE,Mat());
-        }
-        break;
     }
-    crear_nueva(primera_libre(),res);
-
+    if (cerrar != 0) {
+        for (int i = 0; i < cerrar; i++) {
+            morphologyEx(im,res,MORPH_CLOSE,Mat());
+        }
+    }
+    if (abrir != 0) {
+        for (int i = 0; i < abrir; i++) {
+            morphologyEx(im,res,MORPH_OPEN,Mat());
+        }
+    }
+    imshow(foto[nfoto].nombre,res);
+    if (guardar) {
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
 }
 

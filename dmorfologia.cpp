@@ -17,22 +17,18 @@ dmorfologia::~dmorfologia()
 }
 
 
-void dmorfologia::on_pushButton_clicked()
+
+void dmorfologia::on_buttonBox_accepted()
 {
-    morfologia_matematica(nfoto, 0,ui->horizontalSlider->value());
+    morfologia_matematica(nfoto,ui->horizontalSlider->value(),
+                          ui->horizontalSlider_2->value(),
+                          ui->horizontalSlider_3->value(),
+                          ui->horizontalSlider_4->value(),true);
+    reset_callback(nfoto);
 }
 
-void dmorfologia::on_pushButton_2_clicked()
+void dmorfologia::on_buttonBox_rejected()
 {
-    morfologia_matematica(nfoto,1,ui->horizontalSlider_2->value());
-}
-
-void dmorfologia::on_pushButton_3_clicked()
-{
-    morfologia_matematica(nfoto,2,ui->horizontalSlider_3->value());
-}
-
-void dmorfologia::on_pushButton_4_clicked()
-{
-    morfologia_matematica(nfoto,3,ui->horizontalSlider_4->value());
+    mostrar(nfoto);
+    reset_callback(nfoto);
 }

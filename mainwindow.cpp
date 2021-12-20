@@ -29,6 +29,7 @@ using namespace cv;
 #include "dperspectiva.h"
 #include "dialoginformation.h"
 #include "dmorfologia.h"
+#include "dcolorfalso.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -486,7 +487,7 @@ void MainWindow::on_actionPinchar_estirar_triggered()
 void MainWindow::on_actionPerspectiva_triggered()
 {
     if (foto_activa() != -1){
-        dperspectiva dp;
+        dperspectiva dp(this);
         dp.exec();
     }
 }
@@ -494,7 +495,7 @@ void MainWindow::on_actionPerspectiva_triggered()
 void MainWindow::on_actionVer_informaci_n_triggered()
 {
     if (foto_activa() != -1){
-        dialoginformation di(foto_activa());
+        dialoginformation di(foto_activa(),this);
         di.exec();
     }
 }
@@ -547,8 +548,9 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_actionConvertir_a_color_falso_triggered()
 {
-    if (foto_activa() != -1 && primera_libre() != -1) {
-        convertir_color_falso(foto_activa(),primera_libre());
+    if (foto_activa() != -1){
+        dcolorfalso dcf(this);
+        dcf.exec();
     }
 
 }
@@ -600,7 +602,7 @@ void MainWindow::on_actionYCrCb_triggered()
 void MainWindow::on_actionMorfolog_a_triggered()
 {
     if (foto_activa() != -1){
-        dmorfologia dm(foto_activa());
+        dmorfologia dm(foto_activa(),this);
         dm.exec();
     }
 }

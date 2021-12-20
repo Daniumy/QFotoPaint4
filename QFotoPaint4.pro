@@ -18,6 +18,7 @@ SOURCES += main.cpp\
     dajuste_lineal.cpp \
     dbajorrelive.cpp \
     dcapturar_de_video.cpp \
+    dcolorfalso.cpp \
     dialoginformation.cpp \
     dmat_sat_lum.cpp \
     dmorfologia.cpp \
@@ -38,6 +39,7 @@ HEADERS  += mainwindow.h \
     dajuste_lineal.h \
     dbajorrelive.h \
     dcapturar_de_video.h \
+    dcolorfalso.h \
     dialoginformation.h \
     dmat_sat_lum.h \
     dmorfologia.h \
@@ -57,6 +59,7 @@ FORMS    += mainwindow.ui \
     dajuste_lineal.ui \
     dbajorrelive.ui \
     dcapturar_de_video.ui \
+    dcolorfalso.ui \
     dialoginformation.ui \
     dialognueva.ui \
     brillocontraste.ui \
