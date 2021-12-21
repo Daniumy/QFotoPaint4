@@ -552,6 +552,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionConvertir_a_color_falso"/>
     <addaction name="menuTransformar_modelo_de_color"/>
     <addaction name="menuVer_histograma_ecualizado"/>
+    <addaction name="actionRotar_imagen_y_reescalar"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -905,6 +906,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionIndependiente_por_canales">
    <property name="text">
     <string>Independiente por canales</string>
+   </property>
+  </action>
+  <action name="actionRotar_imagen_y_reescalar">
+   <property name="text">
+    <string>Rotar imagen y reescalar</string>
    </property>
   </action>
  </widget>

@@ -217,4 +217,8 @@ void transformar_modelo_color(int factual,int nres, int tipo);
 
 void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int abrir,bool guardar = false);
 //Aplicar las diferentes operaciones de morfología matemática (dilatación, erosión, cerrar y abrir), indicando el número de iteraciones.
+
+void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar = false);
+//Rotar una imagen en un ángulo cualquiera y al mismo tiempo reescalarla al tamaño indicado por el usuario. La
+//imagen de salida deberá estar centrada y tener un tamaño suficiente para caber entera.
 #endif // IMAGENES_H

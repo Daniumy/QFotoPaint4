@@ -98,6 +98,7 @@ private slots:
     void on_actionMorfolog_a_triggered();
     void on_actionConjunto_triggered();
     void on_actionIndependiente_por_canales_triggered();
+    void on_actionRotar_imagen_y_reescalar_triggered();
 };
 
 extern MainWindow *w;

@@ -30,6 +30,7 @@ using namespace cv;
 #include "dialoginformation.h"
 #include "dmorfologia.h"
 #include "dcolorfalso.h"
+#include "drotaryescalar.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -609,5 +610,14 @@ void MainWindow::on_actionIndependiente_por_canales_triggered()
 {
     if (foto_activa() != -1 && primera_libre() != -1) {
         ver_histograma_ecualizado(foto_activa(),primera_libre(),1);
+    }
+}
+
+
+void MainWindow::on_actionRotar_imagen_y_reescalar_triggered()
+{
+    if (foto_activa() != -1){
+        drotaryescalar dre(this);
+        dre.exec();
     }
 }

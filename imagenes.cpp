@@ -9,7 +9,6 @@
 #include <QClipboard>
 #include <QImage>
 #include <QDebug>
-
 ///////////////////////////////////////////////////////////////////
 /////////  VARIABLES GLOBALES                        //////////////
 ///////////////////////////////////////////////////////////////////
@@ -254,7 +253,7 @@ void cb_close (int factual)
 
 void cb_punto (int factual, int x, int y)
 {
-    std::cout << "Thread1 # " << factual << std::endl;
+
     Mat im= foto[factual].img; // Ojo: esto no es una copia, sino a la misma imagen
     if (difum_pincel==0)
         circle(im, Point(x, y), radio_pincel, color_pincel, -1, LINE_AA);
@@ -294,7 +293,7 @@ void cb_punto (int factual, int x, int y)
         multiply(im, cop, im, 1.0/255.0);
         im= res + im;
     }
-    std::cout << "Thread2 # " << factual << std::endl;
+    //std::cout << "Thread2 # " << factual << std::endl;
     imshow(foto[factual].nombre, foto[factual].img);
     foto[factual].modificada= true;
 }
@@ -849,7 +848,6 @@ void ver_suavizado (int nfoto, int ntipo, int tamx, int tamy, bool guardar)
     assert(nfoto>=0 && nfoto<MAX_VENTANAS && foto[nfoto].usada);
     Mat img= foto[nfoto].img.clone();
     if (ntipo==1) {
-        std::cout << "Thread # " << tamx << "Thread # " << tamy << std::endl;
         GaussianBlur(foto[nfoto].img, img, Size(tamx, tamy), 0);}
     else if (ntipo==2)
         blur(foto[nfoto].img, img, Size(tamx, tamy));
@@ -1265,4 +1263,45 @@ void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int
         foto[nfoto].modificada = true;
     }
 }
+//---------------------------------------------------------------------------
+//void rotar_x_angulo(int nfoto,int angulo,bool guardar)
+//{
+//    Mat img = foto[nfoto].img;
 
+//    Point2f centro((img.cols-1)/2.0, (img.rows-1)/2.0);
+//    Mat rot = getRotationMatrix2D(centro, angulo, 1.0);
+
+//    Rect2f bbox = RotatedRect(cv::Point2f(), img.size(), angulo).boundingRect2f();
+
+//    rot.at<double>(0,2) += bbox.width/2.0 - img.cols/2.0;
+//    rot.at<double>(1,2) += bbox.height/2.0 - img.rows/2.0;
+
+//    Mat res;
+//    warpAffine(img, res, rot, bbox.size());
+//    imshow(foto[nfoto].nombre,res);
+//    if (guardar) {
+//        res.copyTo(foto[nfoto].img);
+//        foto[nfoto].modificada = true;
+//    }
+//}
+
+void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar)
+{
+    std::cout << "Escala: " << escala << std::endl;
+    Mat img = foto[nfoto].img;
+    Mat res;
+    double w= img.size().width, h= img.size().height;
+    double sa= sin(angulo*M_PI/180), ca= cos(angulo*M_PI/180);
+    double cx= -w/2*ca-h/2*sa, cy= w/2*sa-h/2*ca;
+    sa= fabs(sa); ca= fabs(ca);
+    Size tam((w*ca+h*sa)*escala, (h*ca+w*sa)*escala);
+    Mat M= getRotationMatrix2D(Point2f(0,0), angulo, escala);
+    M.at<double>(0,2)= tam.width/2+cx*escala;
+    M.at<double>(1,2)= tam.height/2+cy*escala;
+    warpAffine(img, res, M, tam);
+    imshow(foto[nfoto].nombre,res);
+    if (guardar) {
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}

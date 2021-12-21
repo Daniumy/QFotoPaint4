@@ -24,6 +24,7 @@ SOURCES += main.cpp\
     dmorfologia.cpp \
     dperspectiva.cpp \
     dpinchar.cpp \
+    drotaryescalar.cpp \
     mainwindow.cpp \
     imagenes.cpp \
     dialognueva.cpp \
@@ -45,6 +46,7 @@ HEADERS  += mainwindow.h \
     dmorfologia.h \
     dperspectiva.h \
     dpinchar.h \
+    drotaryescalar.h \
     imagenes.h \
     dialognueva.h \
     brillocontraste.h \
@@ -67,6 +69,7 @@ FORMS    += mainwindow.ui \
     dmorfologia.ui \
     dperspectiva.ui \
     dpinchar.ui \
+    drotaryescalar.ui \
     suavizados.ui \
     rotaravideo.ui \
     mediaponderada.ui \
