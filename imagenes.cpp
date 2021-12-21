@@ -950,11 +950,31 @@ void ver_histograma_ecualizado(int nfoto, int nres,int tipo)
         cvtColor(img, hls, COLOR_BGR2HLS_FULL);
         vector<Mat> canales;
         split(hls,canales);
+        canales[0].convertTo(canales[0],CV_8U);
+        canales[1].convertTo(canales[0],CV_8U);
+        canales[2].convertTo(canales[0],CV_8U);
         equalizeHist(canales[0],canales[0]);
         equalizeHist(canales[1],canales[1]);
         equalizeHist(canales[2],canales[2]);
         merge(canales, hls);
         cvtColor(hls,res,COLOR_HLS2BGR_FULL);
+    }
+    else {
+        Mat gris, hist;
+        cvtColor(img, gris, COLOR_BGR2GRAY);
+        int canales[1]= {0}, bins[1]= {256};
+        float rango[2]= {0, 256};
+        const float *rangos[]= {rango};
+        calcHist(&gris, 1, canales, noArray(), hist, 1, bins, rangos);
+        hist*= 255.0/norm(hist, NORM_L1);
+        Mat lut(1, 256, CV_8UC1);
+        float acum= 0.0;
+        for (int i= 0; i<256; i++) {
+            lut.at<uchar>(0, i)= acum;
+            acum+= hist.at<float>(i);
+        }
+        LUT(img, lut, res);
+
     }
     crear_nueva(nres, res);
 }
@@ -1086,9 +1106,6 @@ void nueva_desde_portapapeles(int pl)
         cv::Mat mat(image.height(), image.width(),CV_8UC4, image.bits());
         cvtColor(mat, mat, COLOR_RGBA2RGB);
         crear_nueva(pl,mat);
-    }
-    else {
-        qDebug() << "La imagen es nula ";
     }
 }
 
