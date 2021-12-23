@@ -13,7 +13,7 @@ void mostrar_origen(){
         circle(copia,ptpers[0][i],5,CV_RGB(255,0,0),-1);
     namedWindow("Origen",0);
     imshow("Origen",copia);
-    }
+}
 
 void cb_perspectiva (int evento, int x, int y , int flags, void *ptvoid)
 {

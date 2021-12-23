@@ -338,7 +338,7 @@ void cb_suavizar(int nfoto, int x, int y)
     img = img(roi);
     Mat cop(img.size(), img.type(), CV_RGB(0,0,0));
     Mat res= img.clone();
-    GaussianBlur(res, res,Size(99,99), 4);
+    GaussianBlur(res, res,Size(difum_pincel*2+1, difum_pincel*2+1), 4);
     circle(cop, Point(posx, posy), radio_pincel, CV_RGB(255,255,255), -1, LINE_AA);
     blur(cop, cop, Size(difum_pincel*2+1, difum_pincel*2+1));
     multiply(res, cop, res, 1.0/255.0);
@@ -678,10 +678,8 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
     case HER_SUAVIZADO:
-        if (event==EVENT_LBUTTONUP)
+        if ((event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON) || flags==EVENT_FLAG_LBUTTON)
             cb_suavizar(factual, x, y);
-        else if (event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON)
-            ninguna_accion(factual, x, y);
         else
             ninguna_accion(factual, x, y);
         break;
@@ -934,6 +932,40 @@ void ver_histograma (int nfoto, int nres, int canal)
                   -1);
     }
     crear_nueva(nres, imghist);
+}
+//---------------------------------------------------------------------------
+void ver_histograma_2D (int nfoto, int nres, int agrupacion)
+{
+    Mat img = foto[nfoto].img;
+    Mat hist;
+    int canales[2];
+    switch (agrupacion)
+    {
+    case 0:
+        canales[0] = 2; //R
+        canales[1] = 1; //G
+        break;
+    case 1:
+        canales[0] = 2; //R
+        canales[1] = 0; //B
+        break;
+    case 2:
+        canales[0] = 1; //G
+        canales[1] = 0; //B
+        break;
+    }
+    int bins[2]= {64, 64};
+    float rango[2]= {0, 256};
+    const float *rangos[]= {rango, rango};
+    calcHist(&img, 1, canales, noArray(), hist, 2, bins, rangos);
+
+    Mat pinta(64, 64, CV_8UC1);
+    double minval, maxval;
+    minMaxLoc(hist, &minval, &maxval);
+    for (int r= 0; r<64; r++)
+        for (int g= 0; g<64; g++)
+            pinta.at<uchar>(r, g)= 255-255*hist.at<float>(r, g)/maxval;
+    crear_nueva(nres, pinta);
 }
 
 
@@ -1237,25 +1269,18 @@ QList<QString> ver_informacion(int factual)
 void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int abrir, bool guardar) {
     Mat im = foto[nfoto].img;
     Mat res;
+    Point anchor = Point(-1,-1);
     if (dilatacion != 0) {
-        for (int i = 0; i < dilatacion; i++) {
-            dilate(im,res,Mat());
-        }
+        dilate(im,res,Mat(),anchor,dilatacion);
     }
     if (erosion != 0) {
-        for (int i = 0; i < erosion; i++) {
-            erode(im,res,Mat());
-        }
+        erode(im,res,Mat(),anchor,erosion);
     }
     if (cerrar != 0) {
-        for (int i = 0; i < cerrar; i++) {
-            morphologyEx(im,res,MORPH_CLOSE,Mat());
-        }
+        morphologyEx(im,res,MORPH_CLOSE,Mat(),anchor,abrir);
     }
     if (abrir != 0) {
-        for (int i = 0; i < abrir; i++) {
-            morphologyEx(im,res,MORPH_OPEN,Mat());
-        }
+        morphologyEx(im,res,MORPH_OPEN,Mat(),anchor,abrir);
     }
     imshow(foto[nfoto].nombre,res);
     if (guardar) {
@@ -1263,7 +1288,39 @@ void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int
         foto[nfoto].modificada = true;
     }
 }
-//---------------------------------------------------------------------------
+
+void perfilar(int nfoto, int radio, double porcentaje,bool guardar) {
+    std::cout << "Escala: " << porcentaje << std::endl;
+    Mat img = foto[nfoto].img;
+    Mat lap, suma;
+    Laplacian(img, lap, CV_16S);
+    img.convertTo(img, CV_16S);
+    suma= img - porcentaje*lap;
+    suma.convertTo(suma, CV_8U);
+    imshow(foto[nfoto].nombre,suma);
+}
+
+void buscar_patron(int nfoto1, int nfoto2) {
+    //Las imágenes img y templ deben ser de 1 solo canal, de 8 bits de profundidad o bien reales de 32 bits.
+    Mat img = foto[nfoto1].img;
+    Mat patron = foto[nfoto2].img;
+    Mat resultado;
+    matchTemplate(img, patron, resultado, TM_CCOEFF_NORMED);
+    double min, max;
+    Point pmax;
+    minMaxLoc(resultado, &min, &max, nullptr, &pmax);
+    while (max>0.5) {
+        rectangle(img, pmax,Point(pmax.x+patron.cols,pmax.y+patron.rows),CV_RGB(255,0,0), 3);
+
+        rectangle(resultado, Point(pmax.x-patron.cols,pmax.y-patron.rows),
+                  Point(pmax.x+patron.cols,pmax.y+patron.rows),CV_RGB(0,0,0), -1);
+
+        minMaxLoc(resultado, &min, &max, nullptr, &pmax);
+        namedWindow("Patrón marcado", WINDOW_NORMAL);
+        imshow("Patrón marcado", img);
+    }
+}
+//--------------------------------------------------------------------------- Dejamos este comentado ya que es una versión que hicimos pero sin el re-escalado, previo a que viésemos el anexo.
 //void rotar_x_angulo(int nfoto,int angulo,bool guardar)
 //{
 //    Mat img = foto[nfoto].img;
@@ -1287,7 +1344,6 @@ void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int
 
 void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar)
 {
-    std::cout << "Escala: " << escala << std::endl;
     Mat img = foto[nfoto].img;
     Mat res;
     double w= img.size().width, h= img.size().height;
@@ -1304,4 +1360,65 @@ void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar)
         res.copyTo(foto[nfoto].img);
         foto[nfoto].modificada = true;
     }
+}
+
+//---------------------------------------------------------------------------
+
+void obtener_espectro(int nfoto,int nres)
+{
+    Mat im = foto[nfoto].img;
+    Mat img;
+    cvtColor(im, img, COLOR_BGR2GRAY);
+    Mat escala;
+    img.convertTo(escala, CV_32FC1, 1.0/255);
+    Mat imagenDFT;
+    dft(escala, imagenDFT, DFT_COMPLEX_OUTPUT);
+    vector<Mat> canales;
+    split(imagenDFT, canales);
+    pow(canales[0], 2, canales[0]);
+    pow(canales[1], 2, canales[1]);
+    pow(canales[0]+canales[1], 0.5, imagenDFT);
+    Mat res;
+    imagenDFT.convertTo(res, CV_8UC1, -1, 255);
+
+    /*reorganizar los cuadrantes de la imagen de Fourier
+    para que el origen esté en el centro de la imagen*/
+    res = res(Rect(0, 0, res.cols & -2, res.rows & -2));
+    int cx = res.cols/2;
+    int cy = res.rows/2;
+    Mat q0(res, Rect(0, 0, cx, cy));   // Top-Left - Create a ROI per quadrant
+    Mat q1(res, Rect(cx, 0, cx, cy));  // Top-Right
+    Mat q2(res, Rect(0, cy, cx, cy));  // Bottom-Left
+    Mat q3(res, Rect(cx, cy, cx, cy)); // Bottom-Right
+    Mat tmp;                           // swap quadrants (Top-Left with Bottom-Right)
+    q0.copyTo(tmp);
+    q3.copyTo(q0);
+    tmp.copyTo(q3);
+    q1.copyTo(tmp);                    // swap quadrant (Top-Right with Bottom-Left)
+    q2.copyTo(q1);
+    tmp.copyTo(q2);
+
+    crear_nueva(nres,res);
+
+}
+
+void balance_blancos(int nfoto,int nres)
+{
+    Mat img = foto[nfoto].img;
+    Mat yuv;
+    cvtColor(img,yuv,COLOR_BGR2YUV);
+    vector<Mat> canales;
+    split(yuv,canales);
+
+    canales[1].rowRange(0,canales[1].rows).setTo(Scalar(128));
+    canales[2].rowRange(0,canales[2].rows).setTo(Scalar(128));
+
+    merge(canales, yuv);
+    Mat res;
+    cvtColor(yuv,res,COLOR_YUV2BGR);
+    crear_nueva(nres,res);
+//    Scalar U = mean(canales[1]);
+//    Scalar V = mean(canales[2]);
+//    std::cout << "Thread1 # " << U << std::endl;
+//    std::cout << "Thread2 # " << V << std::endl;
 }

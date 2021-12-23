@@ -99,6 +99,13 @@ private slots:
     void on_actionConjunto_triggered();
     void on_actionIndependiente_por_canales_triggered();
     void on_actionRotar_imagen_y_reescalar_triggered();
+    void on_actionR_G_triggered();
+    void on_actionR_B_triggered();
+    void on_actionG_B_triggered();
+    void on_actionObtener_espectro_triggered();
+    void on_actionPerfilar_triggered();
+    void on_actionBuscar_patr_n_triggered();
+    void on_actionBalance_de_blancos_triggered();
 };
 
 extern MainWindow *w;

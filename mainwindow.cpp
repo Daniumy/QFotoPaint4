@@ -31,6 +31,8 @@ using namespace cv;
 #include "dmorfologia.h"
 #include "dcolorfalso.h"
 #include "drotaryescalar.h"
+#include "dperfilado.h"
+#include "dpatron.h"
 
 QString FiltroImagen = "Todos los formatos (*.jpg *.jpeg *.jpe .jp2 *.tif *.tiff *.png *.gif *.bmp *.dib *.webp *.ppm);;Archivos JPG (*.jpg *.jpeg *.jpe);;Archivos TIF (*.tif *.tiff);;Archivos PNG (*.png);;Archivos GIF (*.gif);;Archivos BMP (*.bmp *.dib);;Otros (*.*)";
 
@@ -619,5 +621,56 @@ void MainWindow::on_actionRotar_imagen_y_reescalar_triggered()
     if (foto_activa() != -1){
         drotaryescalar dre(this);
         dre.exec();
+    }
+}
+
+void MainWindow::on_actionR_G_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma_2D(foto_activa(),primera_libre(),0);
+    }
+}
+
+void MainWindow::on_actionR_B_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma_2D(foto_activa(),primera_libre(),1);
+    }
+}
+
+void MainWindow::on_actionG_B_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        ver_histograma_2D(foto_activa(),primera_libre(),2);
+    }
+}
+
+void MainWindow::on_actionObtener_espectro_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        obtener_espectro(foto_activa(),primera_libre());
+    }
+}
+
+void MainWindow::on_actionPerfilar_triggered()
+{
+    if (foto_activa() != -1){
+        dperfilado dp(this);
+        dp.exec();
+    }
+}
+
+void MainWindow::on_actionBuscar_patr_n_triggered()
+{
+    if (foto_activa() != -1){
+        dpatron dp(foto_activa(),this);
+        dp.exec();
+    }
+}
+
+void MainWindow::on_actionBalance_de_blancos_triggered()
+{
+    if (foto_activa() != -1 && primera_libre() != -1) {
+        balance_blancos(foto_activa(),primera_libre());
     }
 }

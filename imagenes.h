@@ -221,4 +221,22 @@ void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int
 void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar = false);
 //Rotar una imagen en un ángulo cualquiera y al mismo tiempo reescalarla al tamaño indicado por el usuario. La
 //imagen de salida deberá estar centrada y tener un tamaño suficiente para caber entera.
+
+void ver_histograma_2D (int nfoto, int nres, int agrupacion);
+//Mostrar histogramas 2D agrupando canales de 2 en 2 (R-G, R-B o G-B)
+
+void obtener_espectro(int nfoto,int nres);
+//Dada una imagen cualquiera, obtener su espectro de
+//intensidad (magnitud de la transformada de Fourier centrada).
+
+void perfilar(int nfoto, int radio, double porcentaje, bool guardar = false);
+//Perfilar la imagen, especificando el radio y el porcentaje
+//de perfilado aplicado. Se debe poder previsualizar el resultado.
+
+void buscar_patron(int nfoto1, int nfoto2);
+//Dada una imagen grande y otra imagen pequeña (o un ROI de la misma),
+//busca las apariciones más probables del patrón, señalándolas con un recuadro de color rojo.
+
+void balance_blancos(int nfoto,int nres);
+//Ajustar automáticamente el balance de blancos de una imagen.
 #endif // IMAGENES_H

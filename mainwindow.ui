@@ -488,11 +488,20 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionVerde"/>
      <addaction name="actionAzul"/>
     </widget>
+    <widget class="QMenu" name="menuHistograma_2D">
+     <property name="title">
+      <string>Histograma 2D</string>
+     </property>
+     <addaction name="actionR_G"/>
+     <addaction name="actionR_B"/>
+     <addaction name="actionG_B"/>
+    </widget>
     <addaction name="actionSeleccionar_todo"/>
     <addaction name="actionCopiar_a_nueva"/>
     <addaction name="actionDeshacer_acci_n"/>
     <addaction name="actionCopiar_al_portapapeles"/>
     <addaction name="actionVer_informaci_n"/>
+    <addaction name="menuHistograma_2D"/>
     <addaction name="separator"/>
     <addaction name="menuOpciones"/>
     <addaction name="menuHistograma"/>
@@ -553,6 +562,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuTransformar_modelo_de_color"/>
     <addaction name="menuVer_histograma_ecualizado"/>
     <addaction name="actionRotar_imagen_y_reescalar"/>
+    <addaction name="actionObtener_espectro"/>
    </widget>
    <widget class="QMenu" name="menuEfectos">
     <property name="title">
@@ -570,6 +580,9 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionBajorrelieve"/>
     <addaction name="actionPinchar_estirar"/>
     <addaction name="actionMorfolog_a"/>
+    <addaction name="actionPerfilar"/>
+    <addaction name="actionBuscar_patr_n"/>
+    <addaction name="actionBalance_de_blancos"/>
    </widget>
    <widget class="QMenu" name="menuV_deo">
     <property name="title">
@@ -911,6 +924,41 @@ p, li { white-space: pre-wrap; }
   <action name="actionRotar_imagen_y_reescalar">
    <property name="text">
     <string>Rotar imagen y reescalar</string>
+   </property>
+  </action>
+  <action name="actionR_G">
+   <property name="text">
+    <string>R-G</string>
+   </property>
+  </action>
+  <action name="actionR_B">
+   <property name="text">
+    <string>R-B</string>
+   </property>
+  </action>
+  <action name="actionG_B">
+   <property name="text">
+    <string>G-B</string>
+   </property>
+  </action>
+  <action name="actionObtener_espectro">
+   <property name="text">
+    <string>Obtener espectro</string>
+   </property>
+  </action>
+  <action name="actionPerfilar">
+   <property name="text">
+    <string>Perfilar</string>
+   </property>
+  </action>
+  <action name="actionBuscar_patr_n">
+   <property name="text">
+    <string>Buscar patrón</string>
+   </property>
+  </action>
+  <action name="actionBalance_de_blancos">
+   <property name="text">
+    <string>Balance de blancos</string>
    </property>
   </action>
  </widget>

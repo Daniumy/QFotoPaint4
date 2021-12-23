@@ -22,6 +22,8 @@ SOURCES += main.cpp\
     dialoginformation.cpp \
     dmat_sat_lum.cpp \
     dmorfologia.cpp \
+    dpatron.cpp \
+    dperfilado.cpp \
     dperspectiva.cpp \
     dpinchar.cpp \
     drotaryescalar.cpp \
@@ -44,6 +46,8 @@ HEADERS  += mainwindow.h \
     dialoginformation.h \
     dmat_sat_lum.h \
     dmorfologia.h \
+    dpatron.h \
+    dperfilado.h \
     dperspectiva.h \
     dpinchar.h \
     drotaryescalar.h \
@@ -67,6 +71,8 @@ FORMS    += mainwindow.ui \
     brillocontraste.ui \
     dmat_sat_lum.ui \
     dmorfologia.ui \
+    dpatron.ui \
+    dperfilado.ui \
     dperspectiva.ui \
     dpinchar.ui \
     drotaryescalar.ui \
