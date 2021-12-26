@@ -1415,17 +1415,16 @@ void balance_blancos(int nfoto,int nres)
     vector<Mat> canales;
     split(yuv,canales);
 
-    canales[1].rowRange(0,canales[1].rows).setTo(Scalar(128));
-    canales[2].rowRange(0,canales[2].rows).setTo(Scalar(128));
+    Scalar media_U = mean(canales[1]);
+    Scalar media_V = mean(canales[2]);
+
+    canales[1] += 128 - media_U[0];
+    canales[2] += 128 - media_V[0];
 
     merge(canales, yuv);
     Mat res;
     cvtColor(yuv,res,COLOR_YUV2BGR);
     crear_nueva(nres,res);
-//    Scalar U = mean(canales[1]);
-//    Scalar V = mean(canales[2]);
-//    std::cout << "Thread1 # " << U << std::endl;
-//    std::cout << "Thread2 # " << V << std::endl;
 }
 
 
