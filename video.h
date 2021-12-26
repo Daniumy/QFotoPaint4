@@ -40,4 +40,5 @@ void capturar_de_camara (int nres);
 void movimiento(string nombre, int nres);
 //Calcula el movimiento acumulado en un vídeo
 
+void caras();
 #endif // VIDEO_H

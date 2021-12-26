@@ -15,16 +15,19 @@ dperfilado::~dperfilado()
 
 void dperfilado::on_horizontalSlider_valueChanged(int value)
 {
+    if (ui->horizontalSlider->value() % 2 == 0) return;
     perfilar(foto_activa(),ui->horizontalSlider->value(),ui->horizontalSlider_2->value()/100.0);
 }
 
 void dperfilado::on_horizontalSlider_2_valueChanged(int value)
 {
+    if (ui->horizontalSlider->value() % 2 == 0) return;
     perfilar(foto_activa(),ui->horizontalSlider->value(),ui->horizontalSlider_2->value()/100.0);
 }
 
 void dperfilado::on_buttonBox_accepted()
 {
+    if (ui->horizontalSlider->value() % 2 == 0) return;
     perfilar(foto_activa(),ui->horizontalSlider->value(),ui->horizontalSlider_2->value()/100.0,true);
     reset_callback(foto_activa());
 }

@@ -2,6 +2,11 @@
 
 #include "video.h"
 #include <math.h>
+#include <iostream>
+#include <string>
+#include <unistd.h>
+#include <QFileDialog>
+#include "mainwindow.h"
 
 ///////////////////////////////////////////////////////////////////
 /////////  VARIABLES GLOBALES PRIVADAS               //////////////
@@ -16,8 +21,7 @@ static Mat img_media;
 static int frames_img_media;
 // Número de frames que se han acumulado en la media img_media
 
-string FiltroVideo= "Todos los formatos (*.avi *.mpg *.wmv *.mov);;Archivos AVI (*.avi);;Archivos MPG (*.mpg *.mpeg);;Archivos WMV (*.wmv);;Archivos MOV (*.mov);;Otros (*.*)";
-
+string FiltroVideo= "Todos los formatos (*.avi *.mpg *.wmv *.mov *.mp4);;Archivos AVI (*.avi);;Archivos MPG (*.mpg *.mpeg);;Archivos WMV (*.wmv);;Archivos MOV (*.mov);;Otros (*.*)";
 ///////////////////////////////////////////////////////////////////
 /////////  FUNCIONES DE PROCESAMIENTO DE VIDEO       //////////////
 ///////////////////////////////////////////////////////////////////
@@ -173,9 +177,31 @@ void capturar_de_camara (int nres)
         }
 
         destroyWindow("Pulse una tecla para capturar");
-    } else {
-        // TODO: añadir mensaje de error (no se ha podido abrir la cámara)
     }
 }
 
 //---------------------------------------------------------------------------
+
+void caras() {
+    QString nombre= QFileDialog::getOpenFileName(nullptr, "Abrir imagen", ".", QString::fromStdString(FiltroVideo));
+    VideoCapture cap(nombre.toLatin1().data());
+    CascadeClassifier cascade("C:/OpenCV/OpenCV4.1.1G/data/haarcascades/haarcascade_frontalface_alt.xml");
+    int codigocc = VideoWriter::fourcc('M','P','E','G');
+    std::vector<Rect> caras;
+    Mat img;
+    Mat res;
+    VideoWriter writer("whatever", codigocc, 30, img.size());
+    while (cap.read(img) && waitKey(1)==-1) {
+           cascade.detectMultiScale(img, caras, 1.2);
+           for (int i= 0; i<caras.size(); i++)
+                  rectangle(img, caras[i], CV_RGB(255,0,0), 2);
+           namedWindow("Imagen", WINDOW_NORMAL);
+           imshow("Imagen", img);
+           if (writer.isOpened()) {
+               waitKey(1);
+               writer << img;
+           }
+    }
+    qDebug("aqui si llego");
+    writer.release();
+}

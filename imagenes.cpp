@@ -1290,14 +1290,19 @@ void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int
 }
 
 void perfilar(int nfoto, int radio, double porcentaje,bool guardar) {
-    std::cout << "Escala: " << porcentaje << std::endl;
+
     Mat img = foto[nfoto].img;
     Mat lap, suma;
-    Laplacian(img, lap, CV_16S);
+    Laplacian(img, lap, CV_16S,radio);
     img.convertTo(img, CV_16S);
     suma= img - porcentaje*lap;
     suma.convertTo(suma, CV_8U);
+
     imshow(foto[nfoto].nombre,suma);
+    if (guardar) {
+        suma.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
 }
 
 void buscar_patron(int nfoto1, int nfoto2) {
@@ -1422,3 +1427,7 @@ void balance_blancos(int nfoto,int nres)
 //    std::cout << "Thread1 # " << U << std::endl;
 //    std::cout << "Thread2 # " << V << std::endl;
 }
+
+
+
+

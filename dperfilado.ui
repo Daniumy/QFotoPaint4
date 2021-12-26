@@ -62,7 +62,13 @@ color: rgb(255, 255, 255);</string>
     <number>1</number>
    </property>
    <property name="maximum">
-    <number>10</number>
+    <number>9</number>
+   </property>
+   <property name="singleStep">
+    <number>2</number>
+   </property>
+   <property name="pageStep">
+    <number>2</number>
    </property>
    <property name="value">
     <number>1</number>
@@ -77,7 +83,7 @@ color: rgb(255, 255, 255);</string>
     <enum>QSlider::TicksBelow</enum>
    </property>
    <property name="tickInterval">
-    <number>1</number>
+    <number>2</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
