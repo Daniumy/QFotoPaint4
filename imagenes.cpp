@@ -294,7 +294,6 @@ void cb_punto (int factual, int x, int y)
         multiply(im, cop, im, 1.0/255.0);
         im= res + im;
     }
-    //std::cout << "Thread2 # " << factual << std::endl;
     imshow(foto[factual].nombre, foto[factual].img);
     foto[factual].modificada= true;
 }
@@ -934,7 +933,6 @@ void ver_histograma (int nfoto, int nres, int canal)
     Scalar color = CV_RGB(canal == 2 ? 255 : 0, canal == 1 ? 255 : 0, canal == 0 ? 255 : 0);
 
     for (int i= 0; i<256; i++) {
-        // qDebug("Celda %d: %g", i, hist.at<float>(i));
         double valor = hist.at<float>(i) / maxVal;
         rectangle(imghist, Point(3 + i * 391 / 256, 185 - valor * 182),
                   Point(3 + (i + 1) * 391 / 256, 185),

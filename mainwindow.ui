@@ -318,6 +318,16 @@ p, li { white-space: pre-wrap; }
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/brushColor.jpg</normaloff>:/new/prefix1/imagenes/brushColor.jpg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
    </widget>
    <widget class="QToolButton" name="toolButton_7">
     <property name="geometry">
@@ -377,6 +387,10 @@ p, li { white-space: pre-wrap; }
     <property name="text">
      <string>Arcoiris</string>
     </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/rainbow-icono-rainbow-ico-11563615894jcqy2sfutt.png</normaloff>:/new/prefix1/imagenes/rainbow-icono-rainbow-ico-11563615894jcqy2sfutt.png</iconset>
+    </property>
     <property name="checkable">
      <bool>true</bool>
     </property>
@@ -395,6 +409,16 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>Rellenar</string>
+    </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/floodFill.png</normaloff>:/new/prefix1/imagenes/floodFill.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
     </property>
     <property name="checkable">
      <bool>true</bool>
@@ -415,6 +439,16 @@ p, li { white-space: pre-wrap; }
     <property name="text">
      <string>Suavizar</string>
     </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/suavizado.png</normaloff>:/new/prefix1/imagenes/suavizado.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
+    </property>
     <property name="checkable">
      <bool>true</bool>
     </property>
@@ -433,6 +467,16 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>Lápiz</string>
+    </property>
+    <property name="icon">
+     <iconset resource="recursos.qrc">
+      <normaloff>:/new/prefix1/imagenes/pencil.png</normaloff>:/new/prefix1/imagenes/pencil.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
     </property>
     <property name="checkable">
      <bool>true</bool>

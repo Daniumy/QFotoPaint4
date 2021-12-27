@@ -387,11 +387,18 @@ public:
         toolButton_9 = new QToolButton(centralWidget);
         toolButton_9->setObjectName(QString::fromUtf8("toolButton_9"));
         toolButton_9->setGeometry(QRect(330, 0, 41, 41));
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/new/prefix1/imagenes/rainbow-icono-rainbow-ico-11563615894jcqy2sfutt.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_9->setIcon(icon9);
         toolButton_9->setCheckable(true);
         toolButton_9->setAutoExclusive(true);
         toolButton_10 = new QToolButton(centralWidget);
         toolButton_10->setObjectName(QString::fromUtf8("toolButton_10"));
         toolButton_10->setGeometry(QRect(370, 0, 41, 41));
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/new/prefix1/imagenes/floodFill.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_10->setIcon(icon10);
+        toolButton_10->setIconSize(QSize(48, 48));
         toolButton_10->setCheckable(true);
         toolButton_10->setAutoExclusive(true);
         toolButton_11 = new QToolButton(centralWidget);
