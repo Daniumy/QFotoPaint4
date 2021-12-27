@@ -441,22 +441,6 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>50</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -620,6 +604,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="menuImagen_a_v_deo"/>
     <addaction name="menuV_deo_a_imagen"/>
     <addaction name="actionV_deo_a_video"/>
+    <addaction name="actionDetecci_n_de_caras"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -975,6 +960,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionBalance_de_blancos">
    <property name="text">
     <string>Balance de blancos</string>
+   </property>
+  </action>
+  <action name="actionDetecci_n_de_caras">
+   <property name="text">
+    <string>Detección de caras</string>
    </property>
   </action>
  </widget>

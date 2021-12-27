@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[84];
-    char stringdata0[2447];
+    char stringdata0[2461];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -115,7 +115,7 @@ QT_MOC_LITERAL(79, 2288, 35), // "on_actionObtener_espectro_tri..."
 QT_MOC_LITERAL(80, 2324, 27), // "on_actionPerfilar_triggered"
 QT_MOC_LITERAL(81, 2352, 32), // "on_actionBuscar_patr_n_triggered"
 QT_MOC_LITERAL(82, 2385, 37), // "on_actionBalance_de_blancos_t..."
-QT_MOC_LITERAL(83, 2423, 23) // "on_pushButton_2_clicked"
+QT_MOC_LITERAL(83, 2423, 37) // "on_actionDetecci_n_de_caras_t..."
 
     },
     "MainWindow\0on_actionImagen_media_triggered\0"
@@ -191,7 +191,7 @@ QT_MOC_LITERAL(83, 2423, 23) // "on_pushButton_2_clicked"
     "on_actionPerfilar_triggered\0"
     "on_actionBuscar_patr_n_triggered\0"
     "on_actionBalance_de_blancos_triggered\0"
-    "on_pushButton_2_clicked"
+    "on_actionDetecci_n_de_caras_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -463,7 +463,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 77: _t->on_actionPerfilar_triggered(); break;
         case 78: _t->on_actionBuscar_patr_n_triggered(); break;
         case 79: _t->on_actionBalance_de_blancos_triggered(); break;
-        case 80: _t->on_pushButton_2_clicked(); break;
+        case 80: _t->on_actionDetecci_n_de_caras_triggered(); break;
         default: ;
         }
     }

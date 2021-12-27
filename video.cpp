@@ -183,25 +183,28 @@ void capturar_de_camara (int nres)
 //---------------------------------------------------------------------------
 
 void caras() {
-    QString nombre= QFileDialog::getOpenFileName(nullptr, "Abrir imagen", ".", QString::fromStdString(FiltroVideo));
+    QString nombreGuardadoVideo= QFileDialog::getSaveFileName(w, "Guardar vídeo", ".", QString::fromLatin1(FiltroVideo.c_str()));
+    QString nombre= QFileDialog::getOpenFileName(nullptr, "Abrir video", ".", QString::fromStdString(FiltroVideo));
+    int codigocc = VideoWriter::fourcc('M','P','E','G');
+
     VideoCapture cap(nombre.toLatin1().data());
     CascadeClassifier cascade("C:/OpenCV/OpenCV4.1.1G/data/haarcascades/haarcascade_frontalface_alt.xml");
-    int codigocc = VideoWriter::fourcc('M','P','E','G');
     std::vector<Rect> caras;
     Mat img;
-    Mat res;
-    VideoWriter writer("whatever", codigocc, 30, img.size());
+
+    VideoWriter writer(nombreGuardadoVideo.toLatin1().data(), codigocc, 30, img.size());
     while (cap.read(img) && waitKey(1)==-1) {
            cascade.detectMultiScale(img, caras, 1.2);
            for (int i= 0; i<caras.size(); i++)
                   rectangle(img, caras[i], CV_RGB(255,0,0), 2);
+
            namedWindow("Imagen", WINDOW_NORMAL);
            imshow("Imagen", img);
+
            if (writer.isOpened()) {
                waitKey(1);
                writer << img;
            }
     }
-    qDebug("aqui si llego");
     writer.release();
 }

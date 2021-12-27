@@ -17,6 +17,7 @@ Mat mataux;
 bool first_time_punto = true;
 bool first_time_arcoiris = true;
 bool first_time_trazas = true;
+bool first_time_suavizar = true;
 int xtrazas,ytrazas;
 ventana foto[MAX_VENTANAS];
 
@@ -678,8 +679,17 @@ void callback (int event, int x, int y, int flags, void *_nfoto)
             ninguna_accion(factual, x, y);
         break;
     case HER_SUAVIZADO:
-        if ((event==EVENT_MOUSEMOVE && flags==EVENT_FLAG_LBUTTON) || flags==EVENT_FLAG_LBUTTON)
-            cb_suavizar(factual, x, y);
+        if (event == EVENT_LBUTTONUP)
+            first_time_suavizar = true;
+        else if (flags==EVENT_FLAG_LBUTTON)
+        {
+            if (first_time_suavizar)
+            {
+               anadir_accion_a_lista(factual);
+               first_time_suavizar = false;
+            }
+            cb_suavizar(factual,x,y);
+        }
         else
             ninguna_accion(factual, x, y);
         break;
@@ -1152,8 +1162,7 @@ void copiar_al_portapapeles(int nfoto){
 //---------------------------------------------------------------------------
 void deshacer_accion(int factual) {
     if (!foto[factual].lista.isEmpty()){
-
-        foto[factual].img = foto[factual].lista.takeLast(); //el punto y arcoiris
+        foto[factual].img = foto[factual].lista.takeLast();
         imshow(foto[factual].nombre,foto[factual].img.clone());
     }
 }

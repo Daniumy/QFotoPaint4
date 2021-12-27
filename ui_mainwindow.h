@@ -95,6 +95,7 @@ public:
     QAction *actionPerfilar;
     QAction *actionBuscar_patr_n;
     QAction *actionBalance_de_blancos;
+    QAction *actionDetecci_n_de_caras;
     QWidget *centralWidget;
     QToolButton *toolButton;
     QToolButton *toolButton_2;
@@ -113,7 +114,6 @@ public:
     QToolButton *toolButton_10;
     QToolButton *toolButton_11;
     QToolButton *toolButton_12;
-    QPushButton *pushButton_2;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QMenu *menuEdici_n;
@@ -279,6 +279,8 @@ public:
         actionBuscar_patr_n->setObjectName(QString::fromUtf8("actionBuscar_patr_n"));
         actionBalance_de_blancos = new QAction(MainWindow);
         actionBalance_de_blancos->setObjectName(QString::fromUtf8("actionBalance_de_blancos"));
+        actionDetecci_n_de_caras = new QAction(MainWindow);
+        actionDetecci_n_de_caras->setObjectName(QString::fromUtf8("actionDetecci_n_de_caras"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         toolButton = new QToolButton(centralWidget);
@@ -402,10 +404,6 @@ public:
         toolButton_12->setGeometry(QRect(460, 0, 41, 41));
         toolButton_12->setCheckable(true);
         toolButton_12->setAutoExclusive(true);
-        pushButton_2 = new QPushButton(centralWidget);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(500, 50, 41, 41));
-        pushButton_2->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -530,6 +528,7 @@ public:
         menuV_deo->addAction(menuImagen_a_v_deo->menuAction());
         menuV_deo->addAction(menuV_deo_a_imagen->menuAction());
         menuV_deo->addAction(actionV_deo_a_video);
+        menuV_deo->addAction(actionDetecci_n_de_caras);
         menuImagen_a_v_deo->addAction(actionRotar_imagen);
         menuV_deo_a_imagen->addAction(actionImagen_media);
         menuV_deo_a_imagen->addAction(actionMovimiento);
@@ -610,6 +609,7 @@ public:
         actionPerfilar->setText(QCoreApplication::translate("MainWindow", "Perfilar", nullptr));
         actionBuscar_patr_n->setText(QCoreApplication::translate("MainWindow", "Buscar patr\303\263n", nullptr));
         actionBalance_de_blancos->setText(QCoreApplication::translate("MainWindow", "Balance de blancos", nullptr));
+        actionDetecci_n_de_caras->setText(QCoreApplication::translate("MainWindow", "Detecci\303\263n de caras", nullptr));
         toolButton->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         toolButton_2->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -633,7 +633,6 @@ public:
         toolButton_10->setText(QCoreApplication::translate("MainWindow", "Rellenar", nullptr));
         toolButton_11->setText(QCoreApplication::translate("MainWindow", "Suavizar", nullptr));
         toolButton_12->setText(QCoreApplication::translate("MainWindow", "L\303\241piz", nullptr));
-        pushButton_2->setText(QString());
         menuArchivo->setTitle(QCoreApplication::translate("MainWindow", "Archivo", nullptr));
         menuEdici_n->setTitle(QCoreApplication::translate("MainWindow", "Edici\303\263n", nullptr));
         menuOpciones->setTitle(QCoreApplication::translate("MainWindow", "Opciones", nullptr));

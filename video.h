@@ -41,4 +41,7 @@ void movimiento(string nombre, int nres);
 //Calcula el movimiento acumulado en un vídeo
 
 void caras();
+// Dada una entrada de vídeo (de cámara o de vídeo) producir otro vídeo donde se detecten
+//las caras existentes y se marquen con un rectángulo.
+
 #endif // VIDEO_H

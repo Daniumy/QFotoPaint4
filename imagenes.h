@@ -198,8 +198,10 @@ void copiar_al_portapapeles(int nfoto);
 //Copia la el ROI de la imagen actual y lo copia en el portapapeles
 
 void deshacer_accion(int factual);
-
+// Deshacer la última, o las n últimas, operaciones aplicadas sobre la imagen.
 void anadir_accion_a_lista(int factual);
+// Añade la imagen previa a cierta acción a la lista correspondiente
+//que se encuentra como atributo en cada ventana.
 
 QList<QString> ver_informacion(int factual);
 //Mostrar la información relevante de la imagen:
@@ -216,7 +218,8 @@ void transformar_modelo_color(int factual,int nres, int tipo);
 //Aplicar transformaciones del modelo de color de la imagen, entre RGB, HLS, HSV, XYZ, YUV
 
 void morfologia_matematica(int nfoto, int dilatacion,int erosion,int cerrar, int abrir,bool guardar = false);
-//Aplicar las diferentes operaciones de morfología matemática (dilatación, erosión, cerrar y abrir), indicando el número de iteraciones.
+//Aplicar las diferentes operaciones de morfología matemática (dilatación, erosión, cerrar y abrir),
+//indicando el número de iteraciones.
 
 void rotar_x_angulo(int nfoto,int angulo,int escala,bool guardar = false);
 //Rotar una imagen en un ángulo cualquiera y al mismo tiempo reescalarla al tamaño indicado por el usuario. La
