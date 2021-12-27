@@ -1134,6 +1134,17 @@ void copiar_a_nueva (int nfoto, int nres)
     crear_nueva(nres, foto[nfoto].img(foto[nfoto].roi).clone());
 }
 
+void ver_curva_tonal(int nfoto, Mat lut,bool guardar)
+{
+    Mat res;
+    LUT(foto[nfoto].img,lut,res);
+    imshow(foto[nfoto].nombre,res);
+    if (guardar) {
+        res.copyTo(foto[nfoto].img);
+        foto[nfoto].modificada = true;
+    }
+}
+
 //---------------------------------------------------------------------------
 
 void nueva_desde_portapapeles(int pl)

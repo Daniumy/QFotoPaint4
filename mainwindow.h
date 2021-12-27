@@ -107,6 +107,7 @@ private slots:
     void on_actionBuscar_patr_n_triggered();
     void on_actionBalance_de_blancos_triggered();
     void on_actionDetecci_n_de_caras_triggered();
+    void on_actionCurva_tonal_triggered();
 };
 
 extern MainWindow *w;

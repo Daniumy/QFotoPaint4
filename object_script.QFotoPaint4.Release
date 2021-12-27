@@ -3,6 +3,7 @@ release/dajuste_lineal.o
 release/dbajorrelive.o
 release/dcapturar_de_video.o
 release/dcolorfalso.o
+release/dcurva_tunal.o
 release/dialoginformation.o
 release/dmat_sat_lum.o
 release/dmorfologia.o
@@ -27,6 +28,7 @@ release/moc_dajuste_lineal.o
 release/moc_dbajorrelive.o
 release/moc_dcapturar_de_video.o
 release/moc_dcolorfalso.o
+release/moc_dcurva_tunal.o
 release/moc_dialoginformation.o
 release/moc_dmat_sat_lum.o
 release/moc_dmorfologia.o

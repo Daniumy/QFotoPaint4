@@ -27,6 +27,7 @@ using namespace cv;
 #include "video.h"
 #include "dpinchar.h"
 #include "dperspectiva.h"
+#include "dcurva_tunal.h"
 #include "dialoginformation.h"
 #include "dmorfologia.h"
 #include "dcolorfalso.h"
@@ -679,4 +680,12 @@ void MainWindow::on_actionBalance_de_blancos_triggered()
 void MainWindow::on_actionDetecci_n_de_caras_triggered()
 {
     caras();
+}
+
+void MainWindow::on_actionCurva_tonal_triggered()
+{
+    if (foto_activa() != -1){
+        dcurva_tunal dct(foto_activa(),this);
+        dct.exec();
+    }
 }

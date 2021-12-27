@@ -19,6 +19,7 @@ SOURCES += main.cpp\
     dbajorrelive.cpp \
     dcapturar_de_video.cpp \
     dcolorfalso.cpp \
+    dcurva_tunal.cpp \
     dialoginformation.cpp \
     dmat_sat_lum.cpp \
     dmorfologia.cpp \
@@ -43,6 +44,7 @@ HEADERS  += mainwindow.h \
     dbajorrelive.h \
     dcapturar_de_video.h \
     dcolorfalso.h \
+    dcurva_tunal.h \
     dialoginformation.h \
     dmat_sat_lum.h \
     dmorfologia.h \
@@ -66,6 +68,7 @@ FORMS    += mainwindow.ui \
     dbajorrelive.ui \
     dcapturar_de_video.ui \
     dcolorfalso.ui \
+    dcurva_tunal.ui \
     dialoginformation.ui \
     dialognueva.ui \
     brillocontraste.ui \

@@ -191,6 +191,9 @@ void copiar_a_nueva (int nfoto, int nres);
 // Crea una nueva imagen con el ROI de la imagen actual. Si no hay ROI seleccionado,
 // se debe copiar toda la imagen actual
 
+void ver_curva_tonal(int nfoto, Mat lut,bool guardar = false);
+//Transformación de curva tonal
+
 void nueva_desde_portapapeles(int pl);
 //Crea una nueva imagen de la que se encuentra en el portapapeles de windows.
 

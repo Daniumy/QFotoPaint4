@@ -17,11 +17,11 @@
         <file>imagenes/cielo.jpg</file>
         <file>imagenes/madera.jpg</file>
         <file>imagenes/gris.png</file>
-        <file>../../../../../../../Downloads/rainbow.png</file>
         <file>imagenes/rainbow-icono-rainbow-ico-11563615894jcqy2sfutt.png</file>
         <file>imagenes/floodFill.png</file>
         <file>imagenes/suavizado.png</file>
         <file>imagenes/pencil.png</file>
         <file>imagenes/brushColor.jpg</file>
+        <file>imagenes/curvatonal.png</file>
     </qresource>
 </RCC>

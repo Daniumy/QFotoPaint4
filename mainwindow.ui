@@ -598,6 +598,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionInvertir"/>
     <addaction name="menuRotar"/>
     <addaction name="actionMedia_ponderada"/>
+    <addaction name="actionCurva_tonal"/>
     <addaction name="actionEscala_de_grises"/>
     <addaction name="actionAjuste_lineal_del_histograma"/>
     <addaction name="actionMatiz_saturacion_luminosidad"/>
@@ -1009,6 +1010,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionDetecci_n_de_caras">
    <property name="text">
     <string>Detección de caras</string>
+   </property>
+  </action>
+  <action name="actionCurva_tonal">
+   <property name="text">
+    <string>Curva tonal...</string>
    </property>
   </action>
  </widget>

@@ -3,6 +3,7 @@ debug/dajuste_lineal.o
 debug/dbajorrelive.o
 debug/dcapturar_de_video.o
 debug/dcolorfalso.o
+debug/dcurva_tunal.o
 debug/dialoginformation.o
 debug/dmat_sat_lum.o
 debug/dmorfologia.o
@@ -27,6 +28,7 @@ debug/moc_dajuste_lineal.o
 debug/moc_dbajorrelive.o
 debug/moc_dcapturar_de_video.o
 debug/moc_dcolorfalso.o
+debug/moc_dcurva_tunal.o
 debug/moc_dialoginformation.o
 debug/moc_dmat_sat_lum.o
 debug/moc_dmorfologia.o
