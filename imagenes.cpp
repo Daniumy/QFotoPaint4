@@ -1316,8 +1316,8 @@ void perfilar(int nfoto, int radio, double porcentaje,bool guardar) {
 
 void buscar_patron(int nfoto1, int nfoto2) {
     //Las imágenes img y templ deben ser de 1 solo canal, de 8 bits de profundidad o bien reales de 32 bits.
-    Mat img = foto[nfoto1].img;
-    Mat patron = foto[nfoto2].img;
+    Mat img = foto[nfoto1].img.clone();
+    Mat patron = foto[nfoto2].img.clone();
     Mat resultado;
     matchTemplate(img, patron, resultado, TM_CCOEFF_NORMED);
     double min, max;
